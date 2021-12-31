@@ -61,7 +61,7 @@ class _CardScreenState extends State<CardScreen> {
                 padding: EdgeInsets.all(16.0),
                 child: Text(
                   "$time",
-                  style: Theme.of(context).textTheme.display2,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
               Theme(
@@ -113,7 +113,7 @@ class _CardScreenState extends State<CardScreen> {
                         child: Center(
                           child: Text(
                             "${data[index]}",
-                            style: Theme.of(context).textTheme.display2,
+                            style: Theme.of(context).textTheme.headline3,
                           ),
                         ),
                       ),
@@ -137,7 +137,7 @@ class _CardScreenState extends State<CardScreen> {
         title: Text("           "),
         content: Text(
           "Time $time",
-          style: Theme.of(context).textTheme.display2,
+          style: Theme.of(context).textTheme.headline3,
         ),
         actions: <Widget>[
           FlatButton(

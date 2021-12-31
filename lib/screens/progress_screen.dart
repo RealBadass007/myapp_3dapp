@@ -6,6 +6,8 @@ import 'dart:math' as math;
 
 import 'package:myapp_3dapp/home_screen.dart';
 
+import '../main.dart';
+
 class CustomProgressIndicator extends StatefulWidget {
   @override
   _CustomProgressIndicatorState createState() =>
@@ -106,7 +108,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                       onPressed: () {
                         Navigator.pushReplacement(context, new MaterialPageRoute(
                             builder: (context) =>
-                            new HomeScreen())
+                            new MyHomePage())
                         );
 
                       },

@@ -1,4 +1,5 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:myapp_3dapp/custom_drawer_guitar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,13 +23,10 @@ import 'package:myapp_3dapp/size_config.dart';
 PageController pageController = PageController(initialPage: 0);
 int currentIndex = 0;
 
-void main() {
+Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  runApp(MyApp(
-
-  )
-  );
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
