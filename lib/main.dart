@@ -1,4 +1,5 @@
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:myapp_3dapp/custom_drawer_guitar.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,11 @@ import 'package:myapp_3dapp/screens/otp/otp_screen.dart';
 import 'package:myapp_3dapp/screens/sign_in/sign_in_screen.dart';
 import 'package:myapp_3dapp/screens/sign_up/sign_up_screen.dart';
 import 'package:myapp_3dapp/screens/splash/splash_screen.dart';
+import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:provider/provider.dart';
 import 'contacts_screen.dart';
+import 'demo_sign_in.dart';
+import 'home_screen.dart';
 import 'screens/home.dart';
 import 'custom_drawer.dart';
 import 'widgets/custom_bottom_navigation_bar.dart';
@@ -33,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool flip = false;
+
     AppBar appBar = flip
         ? AppBar()
         : AppBar(
@@ -46,13 +52,56 @@ class MyApp extends StatelessWidget {
       ),
       // title: Text('.....'),
     );
-    Widget child = MyHomePage(appBar: appBar);
+
+    Widget child = AuthenticationWrapper();
     // if (flip) {
       child = CustomGuitarDrawer(child: child);
   // }
  //    else {
  // child = CustomDrawer(child: child);
  //   }
+
+    return MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) => context.read<AuthenticationService>().authStateChanges,
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'D3 App',
+        routes: {
+          '/home': (context) =>MyHomePage(),
+
+          '/relax': (context) => RelaxScreen(),
+
+          '/sleep': (context) => SleepScreen(),
+
+          '/contact': (context) => ContactsScreen(),
+
+          '/sign_in': (context) => SignInScreen(),
+
+          '/splash': (context) => SplashScreen(),
+
+          SignInScreen.routeName: (context) => SignInScreen(),
+          ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+          LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
+          SignUpScreen.routeName: (context) => SignUpScreen(),
+          CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
+          OtpScreen.routeName: (context) => OtpScreen(),
+          //HomeScreen.routeName: (context) => HomeScreen(),
+
+        },
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+        ),
+        home: child,
+      ),
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'D3 App',
@@ -75,7 +124,7 @@ class MyApp extends StatelessWidget {
         SignUpScreen.routeName: (context) => SignUpScreen(),
         CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
         OtpScreen.routeName: (context) => OtpScreen(),
-        // HomeScreen.routeName: (context) => HomeScreen(),
+        //HomeScreen.routeName: (context) => HomeScreen(),
 
       },
       theme: ThemeData(
@@ -86,8 +135,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User>();
 
+    if (firebaseUser != null) {
+      return MyHomePage();
+    }
+    return SignInPage();
+    //return new SignInScreen();
+  }
+}
+
+class MyHomePage extends StatefulWidget {
   final AppBar appBar;
 
   MyHomePage({Key key, @required this.appBar}) : super(key: key);
@@ -152,6 +213,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
-

@@ -108,7 +108,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                       onPressed: () {
                         Navigator.pushReplacement(context, new MaterialPageRoute(
                             builder: (context) =>
-                            new MyHomePage())
+                            new HomeScreen())
                         );
 
                       },

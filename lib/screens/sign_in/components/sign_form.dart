@@ -3,6 +3,8 @@ import 'package:myapp_3dapp/components/custom_surfix_icon.dart';
 import 'package:myapp_3dapp/components/form_error.dart';
 import 'package:myapp_3dapp/screens/forgot_password/forgot_password_screen.dart';
 import 'package:myapp_3dapp/screens/login_success/login_success_screen.dart';
+import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:provider/src/provider.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
@@ -19,6 +21,9 @@ class _SignFormState extends State<SignForm> {
   String password;
   bool remember = false;
   final List<String> errors = [];
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -74,10 +79,19 @@ class _SignFormState extends State<SignForm> {
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
+
+
+                context.read<AuthenticationService>().signIn(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                );
+
+                /*
                 print(email);
                 print(password);
                 // if all are valid then go to success screen
                 Navigator.pushNamed(context, LoginSuccessScreen.routeName);
+                */
               }
             },
           ),
