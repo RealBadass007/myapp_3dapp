@@ -51,9 +51,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  CustomNavItem(setPage: setPage, icon: Icons.bubble_chart, id: 0),
+                  CustomNavItem(setPage: setPage, icon: Icons.bubble_chart, id: 1),
                   Container(),
-                  CustomNavItem(setPage: setPage, icon: Icons.home, id: 1),
+                  CustomNavItem(setPage: setPage, icon: Icons.home, id: 0),
                   Container(),
                   CustomNavItem(
                       setPage: setPage, icon: Icons.face_rounded, id: 2),

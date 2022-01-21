@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:provider/src/provider.dart';
 
 class CardItem extends StatelessWidget {
   const CardItem({
@@ -50,9 +52,9 @@ class CardItem extends StatelessWidget {
                             fontSize: 18.0,
                           ),
                         ),
+
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -246,7 +248,6 @@ class CardItem extends StatelessWidget {
               ),
             ),
           ),
-
         ],
       ),
     );

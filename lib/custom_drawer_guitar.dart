@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/screens/sign_in/sign_in_screen.dart';
 import 'package:myapp_3dapp/screens/splash/splash_screen.dart';
 import 'package:myapp_3dapp/screens/splash1/splash_screen1.dart';
+import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:provider/src/provider.dart';
 import 'widgets/custom_bottom_navigation_bar.dart';
 import 'clipper/wave_clipper1.dart';
 import 'package:myapp_3dapp/screens/focus_screen.dart';
@@ -175,14 +177,16 @@ class MyDrawer extends StatelessWidget {
                 // ),
                 ListTile(
                   onTap: () {
+                    context.read<AuthenticationService>().signOut();
+
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) =>
-                        new SplashScreen ())
+                        new SplashScreen1 ())
                     );
                   },
                   leading: Icon(Icons.login_rounded,color:Colors.black54),
                   title:  Text(
-                    'Login',
+                    'Logout',
                     style: TextStyle(color: Colors.black54,
                       //  fontSize:20 ,
                       fontWeight:FontWeight.w700,),

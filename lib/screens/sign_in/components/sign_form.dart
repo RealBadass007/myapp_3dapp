@@ -8,6 +8,7 @@ import 'package:provider/src/provider.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
+import '../../../main.dart';
 import '../../../size_config.dart';
 
 class SignForm extends StatefulWidget {
@@ -76,10 +77,10 @@ class _SignFormState extends State<SignForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           DefaultButton(
             text: "Continue",
+
             press: () async {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-
 
                 context.read<AuthenticationService>().signIn(
                   email: emailController.text.trim(),
@@ -92,6 +93,7 @@ class _SignFormState extends State<SignForm> {
                 // if all are valid then go to success screen
                 Navigator.pushNamed(context, LoginSuccessScreen.routeName);
                 */
+
               }
             },
           ),
@@ -104,10 +106,11 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => password = newValue,
+      controller: passwordController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        } else if (value.length >= 6) {
           removeError(error: kShortPassError);
         }
         return null;
@@ -116,7 +119,7 @@ class _SignFormState extends State<SignForm> {
         if (value.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8) {
+        } else if (value.length < 6) {
           addError(error: kShortPassError);
           return "";
         }
@@ -137,6 +140,7 @@ class _SignFormState extends State<SignForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
+      controller: emailController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);

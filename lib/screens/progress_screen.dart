@@ -25,13 +25,18 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
     Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 50), (_) {
       print('Percent Update');
-      setState(() {
-        percent += 1;
-        if (percent >= 90) {
-          timer.cancel();
-          // percent=0;
-        }
-      });
+      if (this.mounted) {
+        setState(() {
+          percent += 1;
+          if (percent >= 90) {
+            timer.cancel();
+            // percent=0;
+          }
+        });
+      }
+      else{
+        timer.cancel();
+      }
     });
     super.initState();
   }
@@ -106,10 +111,15 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                       color:Color(0xff00a86b).withAlpha(255) ,
                       splashColor: Color(0xfface2d3),
                       onPressed: () {
+                        /*
                         Navigator.pushReplacement(context, new MaterialPageRoute(
                             builder: (context) =>
-                            new HomeScreen())
+                            new ExtensionTest())
                         );
+
+                         */
+
+                        Navigator.popUntil(context, ModalRoute.withName('/'));
 
                       },
 
