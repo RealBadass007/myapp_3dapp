@@ -1,9 +1,4 @@
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/profile/util/custom_clipper.dart';
-
-
-
 
 class StackContainer extends StatelessWidget {
   const StackContainer({

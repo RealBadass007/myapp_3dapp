@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/components/custom_surfix_icon.dart';
 import 'package:myapp_3dapp/components/form_error.dart';
 import 'package:myapp_3dapp/screens/forgot_password/forgot_password_screen.dart';
-import 'package:myapp_3dapp/screens/login_success/login_success_screen.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
 import 'package:provider/src/provider.dart';
 
 import '../../../components/default_button.dart';
 import '../../../constants.dart';
-import '../../../main.dart';
 import '../../../size_config.dart';
 
 class SignForm extends StatefulWidget {

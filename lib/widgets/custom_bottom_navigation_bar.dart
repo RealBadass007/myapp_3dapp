@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myapp_3dapp/screens/home/home_screen.dart';
 
 import '../clipper/wave_clipper.dart';
 import 'custom_nav_item.dart';
-import '../main.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/card_screen.dart';
 import 'package:myapp_3dapp/screens/type_screen.dart';
 import 'package:myapp_3dapp/screens/uber_screen.dart';
 

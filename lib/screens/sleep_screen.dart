@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:myapp_3dapp/components/form_error.dart';
-import 'package:myapp_3dapp/constants.dart';
 import 'package:myapp_3dapp/screens/profile/widgets/card_item.dart';
 import 'package:myapp_3dapp/screens/profile/widgets/stack_container.dart';
 Random random = new Random();

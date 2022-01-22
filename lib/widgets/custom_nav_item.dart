@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
+import 'package:myapp_3dapp/screens/home/home_screen.dart';
 
 class CustomNavItem extends StatelessWidget {
   final IconData icon;
   final int id;
   final Function setPage;
-
 
   const CustomNavItem({this.setPage, this.icon, this.id,});
 

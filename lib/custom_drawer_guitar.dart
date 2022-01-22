@@ -1,18 +1,9 @@
 import 'dart:math' as math;
-
-
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/sign_in/sign_in_screen.dart';
 import 'package:myapp_3dapp/screens/splash/splash_screen.dart';
-import 'package:myapp_3dapp/screens/splash1/splash_screen1.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
 import 'package:provider/src/provider.dart';
-import 'widgets/custom_bottom_navigation_bar.dart';
 import 'clipper/wave_clipper1.dart';
-import 'package:myapp_3dapp/screens/focus_screen.dart';
-import 'screens/relax_screen.dart';
-import 'screens/sleep_screen.dart';
-
 
 class CustomGuitarDrawer extends StatefulWidget {
   final Widget child;
@@ -181,7 +172,7 @@ class MyDrawer extends StatelessWidget {
 
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) =>
-                        new SplashScreen1 ())
+                        new SplashScreen ())
                     );
                   },
                   leading: Icon(Icons.login_rounded,color:Colors.black54),
@@ -197,7 +188,7 @@ class MyDrawer extends StatelessWidget {
                   onTap: (){
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) =>
-                        new SplashScreen1 ())
+                        new SplashScreen ())
                     );},
                   leading: Icon(Icons.star,color:Colors.black54),
                   title:  Text(
@@ -237,9 +228,8 @@ class MyDrawer extends StatelessWidget {
                 //       fontWeight:FontWeight.w700,),
                 //   ),
                 // ),
-                SizedBox(height: 415.0),
+                SizedBox(height: 399.0),
                 Positioned(
-
                   child: ClipPath(
                     clipper: WaveClipper1(),
                     child: Container(
