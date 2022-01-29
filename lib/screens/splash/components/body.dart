@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/constants.dart';
 import 'package:myapp_3dapp/screens/sign_in/sign_in_screen.dart';
+import 'package:myapp_3dapp/screens/sign_up/sign_up_screen.dart';
 import 'package:myapp_3dapp/size_config.dart';
 
 
@@ -66,14 +67,21 @@ class _BodyState extends State<Body> {
                             (index) => buildDot(index: index),
                       ),
                     ),
-                    Spacer(flex: 3),
+                    Spacer(flex: 1),
                     DefaultButton(
-                      text: "Continue",
+                      text: "Login",
                       press: () {
                         Navigator.pushNamed(context, SignInScreen.routeName);
                       },
                     ),
-                    Spacer(),
+                    SizedBox(height: getProportionateScreenHeight(30)),
+                    DefaultButton(
+                      text: "Sign Up",
+                      press: () {
+                        Navigator.pushNamed(context, SignUpScreen.routeName);
+                      },
+                    ),
+                    SizedBox(height: getProportionateScreenHeight(60)),
                   ],
                 ),
               ),

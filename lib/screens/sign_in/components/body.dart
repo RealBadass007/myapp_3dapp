@@ -1,7 +1,7 @@
  import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/components/no_account_text.dart';
 import '../../../size_config.dart';
-import 'sign_form.dart';
+import 'sign_in_form.dart';
 
 
 class Body extends StatelessWidget {
@@ -31,7 +31,7 @@ class Body extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
-                SignForm(),
+                SignInForm(),
                 SizedBox(height: SizeConfig.screenHeight * 0.08),
 
                 SizedBox(height: getProportionateScreenHeight(20)),

@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:myapp_3dapp/screens/complete_profile/complete_profile_screen.dart';
+import 'screens/complete_profile/to_complete_profile_screen.dart';
 import 'package:myapp_3dapp/screens/forgot_password/forgot_password_screen.dart';
 import 'package:myapp_3dapp/screens/home/to_home_screen.dart';
 import 'package:myapp_3dapp/screens/login_success/login_success_screen.dart';
@@ -28,6 +29,10 @@ var customRoutes = <String, WidgetBuilder>{
 
   '/sign_in': (context) => SignInScreen(),
 
+  '/complete_profile': (context) => CompleteProfileScreen(),
+
+  '/to_complete_profile': (context) => ToCompleteProfileScreen(),
+
   ToHomeScreen.routeName: (context) => ToHomeScreen(),
   ToSplashScreen.routeName: (context) => ToSplashScreen(),
   SignInScreen.routeName: (context) => SignInScreen(),
@@ -35,6 +40,7 @@ var customRoutes = <String, WidgetBuilder>{
   LoginSuccessScreen.routeName: (context) => LoginSuccessScreen(),
   SignUpScreen.routeName: (context) => SignUpScreen(),
   CompleteProfileScreen.routeName: (context) => CompleteProfileScreen(),
+  ToCompleteProfileScreen.routeName: (context) => ToCompleteProfileScreen(),
   OtpScreen.routeName: (context) => OtpScreen(),
 
 };

@@ -1,13 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/components/custom_surfix_icon.dart';
 import 'package:myapp_3dapp/components/default_button.dart';
 import 'package:myapp_3dapp/components/form_error.dart';
-import 'package:myapp_3dapp/screens/otp/otp_screen.dart';
+import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:provider/src/provider.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
 class CompleteProfileForm extends StatefulWidget {
+
+  final String temail;
+  final String tpassword;
+
+  CompleteProfileForm({this.temail, this.tpassword});
+
   @override
   _CompleteProfileFormState createState() => _CompleteProfileFormState();
 }
@@ -15,10 +24,16 @@ class CompleteProfileForm extends StatefulWidget {
 class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
+
   String firstName;
   String lastName;
   String phoneNumber;
   String address;
+
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -36,6 +51,15 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
+
+    final firebaseUser = context.watch<User>();
+    /*
+    final routeData = ModalRoute.of(context).settings.arguments as Map<String, Object>;
+    final email = routeData['email'];
+    final password = routeData['password'];
+
+     */
+
     return Form(
       key: _formKey,
       child: Column(
@@ -51,9 +75,45 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "continue",
-            press: () {
+            press: () async {
               if (_formKey.currentState.validate()) {
-                Navigator.pushNamed(context, OtpScreen.routeName);
+                _formKey.currentState.save();
+                //print("Inside CPF button");
+
+                //print("email = ${widget.temail}");
+
+                await context.read<AuthenticationService>().signUp(
+                  email: widget.temail,
+                  password: widget.tpassword,
+                ).then((value){
+                  User user = FirebaseAuth.instance.currentUser;
+                  //print(User);
+                    FirebaseFirestore.instance.collection("user_cred")
+                        .doc(user.uid)
+                        .set({
+                      'Uid': user.uid,
+                      'Email': widget.temail,
+                      'First Name' : firstNameController.text.trim(),
+                      'Last Name' : lastNameController.text.trim(),
+                      'Address' : address,
+                      'Phone Number' : phoneNumberController.text.trim(),
+                    });
+                }
+                );
+
+                /*
+                await context.read<DatabaseService>().updateUserSignUpData(
+                    user_uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    first_name: firstNameController.text.trim(),
+                    last_name: lastNameController.text.trim(),
+                    address: addressController.text.trim(),
+                    ph_number: phoneNumberController.text.trim(),
+                );
+
+                 */
+
+                //Navigator.pushNamed(context, OtpScreen.routeName);
               }
             },
           ),
@@ -65,6 +125,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildAddressFormField() {
     return TextFormField(
       onSaved: (newValue) => address = newValue,
+      controller: addressController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kAddressNullError);
@@ -94,6 +155,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     return TextFormField(
       keyboardType: TextInputType.phone,
       onSaved: (newValue) => phoneNumber = newValue,
+      controller: phoneNumberController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPhoneNumberNullError);
@@ -121,6 +183,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildLastNameFormField() {
     return TextFormField(
       onSaved: (newValue) => lastName = newValue,
+      controller: lastNameController,
       decoration: InputDecoration(
         labelText: "Last Name",
         hintText: "Enter your last name",
@@ -135,6 +198,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   TextFormField buildFirstNameFormField() {
     return TextFormField(
       onSaved: (newValue) => firstName = newValue,
+      controller: firstNameController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kNamelNullError);

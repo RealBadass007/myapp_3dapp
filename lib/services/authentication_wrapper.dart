@@ -12,8 +12,18 @@ class AuthenticationWrapper extends StatelessWidget {
     print(firebaseUser);
 
     if (firebaseUser != null) {
-      return ToHomeScreen();
+      /*
     }
-    return ToSplashScreen();
+        var test = DatabaseService().checkExist(firebaseUser.uid);
+        print("test = ${test}");
+        if(test){
+          print("inside if DatabaseService.exist");
+
+       */
+          return ToHomeScreen();
+        }
+    else {
+      return ToSplashScreen();
+    }
   }
 }

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:myapp_3dapp/services/database_service.dart';
 import 'package:provider/provider.dart';
 import 'services/authentication_wrapper.dart';
 
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthenticationService>(
           create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        Provider<DatabaseService>(
+          create: (_) => DatabaseService(),
         ),
         StreamProvider(
           create: (context) =>

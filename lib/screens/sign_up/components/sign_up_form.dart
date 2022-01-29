@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/components/custom_surfix_icon.dart';
 import 'package:myapp_3dapp/components/default_button.dart';
@@ -9,6 +10,7 @@ import '../../../size_config.dart';
 
 
 class SignUpForm extends StatefulWidget {
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }
@@ -20,6 +22,11 @@ class _SignUpFormState extends State<SignUpForm> {
   String conform_password;
   bool remember = false;
   final List<String> errors = [];
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -50,14 +57,74 @@ class _SignUpFormState extends State<SignUpForm> {
           SizedBox(height: getProportionateScreenHeight(40)),
           DefaultButton(
             text: "Continue",
-            press: () {
+            press: () async {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+
+                print("printed inside button");
+
+                try {
+                  // Fetch sign-in methods for the email address
+                  final list = await FirebaseAuth.instance.fetchSignInMethodsForEmail(emailController.text.trim());
+
+                  // In case list is not empty
+                  if (list.isNotEmpty) {
+                    // Return true because there is an existing
+                    // user using the email address
+                    return true;
+                  } else {
+                    // Return false because email adress is not in use
+                    //print("controller = ${emailController.text.trim()}");
+                    Navigator.pushNamed(context, CompleteProfileScreen.routeName, arguments: { 'temail': emailController.text.trim(), 'tpassword': passwordController.text.trim()});
+                    return false;
+                  }
+                } catch (error) {
+                  // Handle error
+                  // ...
+                  return true;
+                }
+
+                //Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+
+                /*
+
+                await context.read<AuthenticationService>().signUp(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                );
+
+                 */
+                /*.then((value) async {
+
+                  User user = FirebaseAuth.instance.currentUser;
+                  //print(User);
+                    await FirebaseFirestore.instance.collection("user_cred")
+                        .doc(user.uid)
+                        .set({
+                      'uid': user.uid,
+                      'email': emailController.text.trim(),
+                    });
+                }
+                ).then((value) async {
+                  await Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+                }
+                );
+
+                 */
+                  //Navigator.pushNamed(context, CompleteProfileScreen.routeName);
+              };
+
+              /*
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 // if all are valid then go to success screen
                 Navigator.pushNamed(context, CompleteProfileScreen.routeName);
               }
+
+               */
             },
           ),
+
         ],
       ),
     );
@@ -67,6 +134,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => conform_password = newValue,
+      controller: confirmPasswordController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
@@ -100,10 +168,11 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       obscureText: true,
       onSaved: (newValue) => password = newValue,
+      controller: passwordController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
+        } else if (value.length >= 6) {
           removeError(error: kShortPassError);
         }
         password = value;
@@ -112,7 +181,7 @@ class _SignUpFormState extends State<SignUpForm> {
         if (value.isEmpty) {
           addError(error: kPassNullError);
           return "";
-        } else if (value.length < 8) {
+        } else if (value.length < 6) {
           addError(error: kShortPassError);
           return "";
         }
@@ -133,6 +202,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       keyboardType: TextInputType.emailAddress,
       onSaved: (newValue) => email = newValue,
+      controller: emailController,
       onChanged: (value) {
         if (value.isNotEmpty) {
           removeError(error: kEmailNullError);

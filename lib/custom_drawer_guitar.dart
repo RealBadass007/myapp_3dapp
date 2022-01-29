@@ -169,11 +169,13 @@ class MyDrawer extends StatelessWidget {
                 ListTile(
                   onTap: () {
                     context.read<AuthenticationService>().signOut();
-
+                    /*
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) =>
                         new SplashScreen ())
                     );
+
+                     */
                   },
                   leading: Icon(Icons.login_rounded,color:Colors.black54),
                   title:  Text(
@@ -183,20 +185,6 @@ class MyDrawer extends StatelessWidget {
                       fontWeight:FontWeight.w700,),
                   ),
 
-                ),
-                ListTile(
-                  onTap: (){
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>
-                        new SplashScreen ())
-                    );},
-                  leading: Icon(Icons.star,color:Colors.black54),
-                  title:  Text(
-                    'Sign Up',
-                    style: TextStyle(color: Colors.black54,
-                      //  fontSize:20 ,
-                      fontWeight:FontWeight.w700,),
-                  ),
                 ),
                 ListTile(
 
