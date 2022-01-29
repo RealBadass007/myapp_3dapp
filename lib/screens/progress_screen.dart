@@ -61,8 +61,8 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
             Column(
               children: [
                 Container(
-                  height: 250,
-                  width: 250,
+                  height: 200,
+                  width: 200,
                   child: LiquidCircularProgressIndicator(
                     value: percent / 100,
                     // Defaults to 0.5.

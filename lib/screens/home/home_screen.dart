@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xfface2d3),
       appBar: AppBar(
         title: Text(' '),
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xfface2d3),
         elevation: 0.0,
 
+        /*
         actions: <Widget>[
 
           // PopupMenuButton<String>(
@@ -54,8 +56,10 @@ class _HomePageState extends State<HomePage> {
           //   },
           // )
         ],
+
+         */
       ),
-      body: Stack(
+      body: Column(
         children: [
           Flexible(
             child: PageView(
@@ -70,7 +74,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-
 
       bottomNavigationBar:CustomBottomNavigationBar(),
 

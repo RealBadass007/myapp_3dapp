@@ -6,6 +6,7 @@ class FocusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor:Color(0xfface2d3),
       body: SafeArea(
         child: Padding(
@@ -15,7 +16,6 @@ class FocusScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-
                 Padding(
                   padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
                   child:Ink(

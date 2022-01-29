@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/splash/splash_screen.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
 import 'package:provider/src/provider.dart';
 import 'clipper/wave_clipper1.dart';
@@ -217,25 +216,30 @@ class MyDrawer extends StatelessWidget {
                 //   ),
                 // ),
                 SizedBox(height: 399.0),
-                Positioned(
-                  child: ClipPath(
-                    clipper: WaveClipper1(),
-                    child: Container(
-                      height: 90,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Color(0xff00a86b).withAlpha(150),
-                            Color(0xff00a86b),
-                          ],
+                Stack(
+                  children: [
+                    Positioned(
+                    child: ClipPath(
+                      clipper: WaveClipper1(),
+                      child: Container(
+                        height: 70,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Color(0xff00a86b).withAlpha(150),
+                              Color(0xff00a86b),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  ],
                 ),
+
 
               ],
             ),

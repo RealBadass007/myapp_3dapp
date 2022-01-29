@@ -6,6 +6,7 @@ class RelaxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor:Color(0xfface2d3),
       body: SafeArea(
         child: Padding(
@@ -34,8 +35,9 @@ class RelaxScreen extends StatelessWidget {
 
                           ),
                           child: IconButton(
-
                             icon: Image.asset('assets/taxi.png'), //Icon(Icons.directions_car),
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
                             color: Colors.grey[600],
                             iconSize: 100,
                             onPressed: () { Navigator.push(context, new MaterialPageRoute(
@@ -84,6 +86,8 @@ class RelaxScreen extends StatelessWidget {
                           child: IconButton(
 
                             icon: Image.asset('assets/test.png'), //Icon(Icons.directions_car),
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
                             color: Colors.grey[600],
                             iconSize: 100,
 
