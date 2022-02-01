@@ -6,12 +6,11 @@ class DatabaseService{
   bool newUser = false;
   //DatabaseService({this.uid});
 
-
-  CollectionReference users = FirebaseFirestore.instance.collection('user_cred');
+  CollectionReference user_data_ref = FirebaseFirestore.instance.collection('user_cred');
 
   Future updateUserSignUpData ({String user_uid, String email, String first_name, String last_name, String address, String ph_number }) async {
     print("InUpdate");
-    return await users
+    return await user_data_ref
         .doc(user_uid)
         .set({
           'uid' : user_uid,
@@ -21,6 +20,21 @@ class DatabaseService{
           'Address' : address,
           'Phone Number' : ph_number,
         });
+  }
+
+  Future getUsersData({String user_uid}) async {
+    Map userData = {};
+    try {
+      await user_data_ref.doc(user_uid).get().then((DocumentSnapshot doc) {
+        userData = doc.data();
+        //print("Here");
+        //print(userData);
+      });
+      return userData;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   /*

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CardItem extends StatelessWidget {
+
+  final AsyncSnapshot<dynamic> snapshot;
+
   const CardItem({
-    Key key,
+    Key key, this.snapshot,
   }) : super(key: key);
 
   @override
@@ -44,7 +47,7 @@ class CardItem extends StatelessWidget {
                         ),
                         SizedBox(width: 16.0),
                         Text(
-                          "21 August 2000",
+                          "${snapshot.data['Date of Birth']}",
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 18.0,
@@ -91,7 +94,8 @@ class CardItem extends StatelessWidget {
                         ),
                         SizedBox(width: 16.0),
                         Text(
-                          "19 July 2020",
+                          "${snapshot.data['Date Joined']}",
+                          //"19 July 2020",
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 18.0,

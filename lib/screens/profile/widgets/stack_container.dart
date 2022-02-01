@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class StackContainer extends StatelessWidget {
+
+  final AsyncSnapshot<dynamic> snapshot;
+
   const StackContainer({
-    Key key,
+    Key key, this.snapshot,
   }) : super(key: key);
 
   @override
@@ -37,7 +40,8 @@ class StackContainer extends StatelessWidget {
                   ),
                   SizedBox(height: 10.0),
                   Text(
-                    "Ameya",
+                    "${snapshot.data['First Name']} ${snapshot.data['Last Name']}",
+                    //"Ameya",
                     style: TextStyle(
                       fontSize: 21.0,
                       fontWeight: FontWeight.bold,

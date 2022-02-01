@@ -6,6 +6,7 @@ import 'package:myapp_3dapp/components/default_button.dart';
 import 'package:myapp_3dapp/components/form_error.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
 import 'package:provider/src/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 import '../../../size_config.dart';
@@ -34,6 +35,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController DOBController = TextEditingController();
 
   void addError({String error}) {
     if (!errors.contains(error))
@@ -70,6 +72,8 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPhoneNumberFormField(),
           SizedBox(height: getProportionateScreenHeight(30)),
+          buildDOBField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildAddressFormField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(40)),
@@ -93,8 +97,10 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                         .set({
                       'Uid': user.uid,
                       'Email': widget.temail,
+                      'Date Joined': "${user.metadata.creationTime}".substring(0,10),
                       'First Name' : firstNameController.text.trim(),
                       'Last Name' : lastNameController.text.trim(),
+                      'Date of Birth' : DOBController.text.trim(),
                       'Address' : address,
                       'Phone Number' : phoneNumberController.text.trim(),
                     });
@@ -122,6 +128,55 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     );
   }
 
+  TextFormField buildDOBField() {
+    return TextFormField(
+      onSaved: (newValue) => address = newValue,
+      controller: DOBController,
+      readOnly: true,
+      onTap: () async {
+        DateTime pickedDate = await showDatePicker(
+            context: context, initialDate: DateTime.now(),
+            firstDate: DateTime(1900), //DateTime.now() - not to allow to choose before today.
+            lastDate: DateTime.now()
+        );
+
+        if(pickedDate != null ){
+          print(pickedDate);  //pickedDate output format => 2021-03-10 00:00:00.000
+          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+          print(formattedDate); //formatted date output using intl package =>  2021-03-16
+          //you can implement different kind of Date Format here according to your requirement
+
+          setState(() {
+            DOBController.text = formattedDate; //set output date to TextField value.
+          });
+        }else{
+          print("Date is not selected");
+        }
+      },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kDOBNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kDOBNullError);
+          return "";
+        }
+        return null;
+      },
+      decoration: InputDecoration(
+        labelText: "Date of Birth",
+        hintText: "Pick your DOB",
+        // If  you are using latest version of flutter then lable text and hint text shown like this
+        // if you r using flutter less then 1.20.* then maybe this is not working properly
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+      ),
+    );
+  }
+
   TextFormField buildAddressFormField() {
     return TextFormField(
       onSaved: (newValue) => address = newValue,
@@ -145,8 +200,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon:
-        CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Location point.svg"),
       ),
     );
   }
@@ -175,7 +229,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Phone.svg"),
       ),
     );
   }
@@ -184,13 +238,26 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
     return TextFormField(
       onSaved: (newValue) => lastName = newValue,
       controller: lastNameController,
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: kLNameNullError);
+        }
+        return null;
+      },
+      validator: (value) {
+        if (value.isEmpty) {
+          addError(error: kLNameNullError);
+          return "";
+        }
+        return null;
+      },
       decoration: InputDecoration(
         labelText: "Last Name",
         hintText: "Enter your last name",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
     );
   }
@@ -201,13 +268,13 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
       controller: firstNameController,
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: kNamelNullError);
+          removeError(error: kFNameNullError);
         }
         return null;
       },
       validator: (value) {
         if (value.isEmpty) {
-          addError(error: kNamelNullError);
+          addError(error: kFNameNullError);
           return "";
         }
         return null;
@@ -218,7 +285,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
+        //suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/User.svg"),
       ),
     );
   }
