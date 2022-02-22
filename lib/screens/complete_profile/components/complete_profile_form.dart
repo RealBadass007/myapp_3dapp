@@ -53,8 +53,6 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   @override
   Widget build(BuildContext context) {
-
-    final firebaseUser = context.watch<User>();
     /*
     final routeData = ModalRoute.of(context).settings.arguments as Map<String, Object>;
     final email = routeData['email'];
