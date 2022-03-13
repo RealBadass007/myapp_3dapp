@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp_3dapp/screens/itt_screen.dart';
 import 'package:myapp_3dapp/screens/type_screen.dart';
 import 'package:myapp_3dapp/screens/uber_screen.dart';
 
@@ -35,8 +36,8 @@ class RelaxScreen extends StatelessWidget {
 
                           ),
                           child: IconButton(
-                            icon: Image.asset('assets/taxi.png'), //Icon(Icons.directions_car),
-                            padding: EdgeInsets.zero,
+                            icon: Image.asset('assets/map.png'), //Icon(Icons.directions_car),
+                            padding: EdgeInsets.all(8.0),
                             constraints: BoxConstraints(),
                             color: Colors.grey[600],
                             iconSize: 100,
@@ -55,7 +56,7 @@ class RelaxScreen extends StatelessWidget {
                 Padding(
                   padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,0.0),
                   child:Text(
-                    'Call A Cab',
+                    'Location Services',
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -86,14 +87,14 @@ class RelaxScreen extends StatelessWidget {
                           child: IconButton(
 
                             icon: Image.asset('assets/test.png'), //Icon(Icons.directions_car),
-                            padding: EdgeInsets.zero,
+                            padding: EdgeInsets.all(8.0),
                             constraints: BoxConstraints(),
                             color: Colors.grey[600],
                             iconSize: 100,
 
                             onPressed: () { Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>
-                                new TypeScreen())
+                                new CardScreen())
                             ); },
 
 

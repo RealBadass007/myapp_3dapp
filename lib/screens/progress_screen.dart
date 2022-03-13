@@ -19,7 +19,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
   void initState() {
     Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 50), (_) {
-      print('Percent Update');
+      //print('Percent Update');
       if (this.mounted) {
         setState(() {
           percent += 1;
@@ -106,13 +106,6 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                       color:Color(0xff00a86b).withAlpha(255) ,
                       splashColor: Color(0xfface2d3),
                       onPressed: () {
-                        /*
-                        Navigator.pushReplacement(context, new MaterialPageRoute(
-                            builder: (context) =>
-                            new ExtensionTest())
-                        );
-
-                         */
 
                         Navigator.popUntil(context, ModalRoute.withName('/'));
 
