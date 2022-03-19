@@ -8,7 +8,8 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/screens//type_screen.dart';
 import 'package:myapp_3dapp/screens/progress_screen.dart';
-import 'package:myapp_3dapp/services/ExcelServices.dart';
+import 'package:myapp_3dapp/services/excel_service.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 int turns = 4;
 
@@ -22,15 +23,15 @@ List generateIttArray (int len) {
   return rndIttArr;
 }
 
-class CardScreen extends StatefulWidget {
+class ITTScreen extends StatefulWidget {
   final int size;
 
-  const CardScreen({Key key, this.size = 12}) : super(key: key);
+  const ITTScreen({Key key, this.size = 12}) : super(key: key);
   @override
-  _CardScreenState createState() => _CardScreenState();
+  _ITTScreenState createState() => _ITTScreenState();
 }
 
-class _CardScreenState extends State<CardScreen> {
+class _ITTScreenState extends State<ITTScreen> {
   List<GlobalKey<FlipCardState>> cardStateKeys = [];
   List<bool> cardFlips = [];
   List<String> data = [];
@@ -55,6 +56,8 @@ class _CardScreenState extends State<CardScreen> {
   List rndIttArr = generateIttArray(turns);
   List userIttArr = [];
   List userReactArr = [];
+
+  bool permissionGranted = false;
 
   @override
   void initState() {
@@ -118,15 +121,27 @@ class _CardScreenState extends State<CardScreen> {
 
   regulate(){
     taskNo ++;
-    if(taskNo == turns){
+    if(taskNo == turns) {
       print(userIttArr);
       print(userReactArr);
       int errors = calcError(userIttArr, rndIttArr);
       print(errors);
-      ExcelServices.CreateCSV(userReactArr, errors);
+
+      Future _getStoragePermission() async {
+        if (await Permission.storage.request().isGranted) {
+          setState(() {
+            permissionGranted = true;
+          });
+        }
+      }
+
+      _getStoragePermission();
+
+      //ExcelServices.CreateCSV(userReactArr, errors);
+
       Navigator.push(context, new MaterialPageRoute(
           builder: (context) =>
-          new CustomProgressIndicator())
+          new CustomProgressIndicator(itt_arr: userReactArr, itt_err: errors))
       );
     }
     else if(startTest && waiting){

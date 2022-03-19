@@ -1,6 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
+import 'dart:io';
+
+import 'package:path_provider/path_provider.dart';
+
 class DatabaseService{
+
   //final String uid;
   //static bool exist = false;
   bool newUser = false;
@@ -34,6 +41,22 @@ class DatabaseService{
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future<String> UploadCSV() async {
+
+    //print("In Upload");
+
+    File file = File("/storage/emulated/0/Download/Testing.xlsx");
+
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('uploads/Testing_${DateTime.now()}.xlsx')
+          .putFile(file);
+      return "Excel Uploaded";
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
     }
   }
 

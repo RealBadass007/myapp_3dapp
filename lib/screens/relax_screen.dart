@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/screens/itt_screen.dart';
+import 'package:myapp_3dapp/screens/progress_screen.dart';
 import 'package:myapp_3dapp/screens/type_screen.dart';
 import 'package:myapp_3dapp/screens/uber_screen.dart';
 
@@ -94,7 +95,8 @@ class RelaxScreen extends StatelessWidget {
 
                             onPressed: () { Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>
-                                new CardScreen())
+                                new ITTScreen())
+                                //new CustomProgressIndicator())
                             ); },
 
 

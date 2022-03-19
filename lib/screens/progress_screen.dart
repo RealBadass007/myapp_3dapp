@@ -1,9 +1,17 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:myapp_3dapp/services/database_service.dart';
+import 'package:myapp_3dapp/services/excel_service.dart';
 
 class CustomProgressIndicator extends StatefulWidget {
+
+  final List itt_arr;
+  final int itt_err;
+
+  CustomProgressIndicator({this.itt_arr, this.itt_err});
+
   @override
   _CustomProgressIndicatorState createState() =>
       _CustomProgressIndicatorState();
@@ -15,19 +23,33 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
 
   double percent = 0.0;
 
+  bool proceed = false;
+
+  bool creating_excel = false;
+
+  bool created_excel = false;
+
+  ExcelServices es = new ExcelServices();
+
+  DatabaseService ds = new DatabaseService();
+
+  Future<String> CreateCSV() async {
+    return await es.CreateCSV(widget.itt_arr, widget.itt_err);
+  }
+
+  deleteFile() async {
+    final file = await File("/storage/emulated/0/Download/Testing.xlsx");
+    await file.delete();
+  }
+
   @override
   void initState() {
+
     Timer timer;
     timer = Timer.periodic(Duration(milliseconds: 50), (_) {
       //print('Percent Update');
       if (this.mounted) {
-        setState(() {
-          percent += 1;
-          if (percent >= 90) {
-            timer.cancel();
-            // percent=0;
-          }
-        });
+
       }
       else{
         timer.cancel();
@@ -98,21 +120,42 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                   child: SizedBox(
                     width: 180,
                     height: 60,
-                    child: RaisedButton(
-                      child: Text("Continue"),
-                      disabledColor:Color(0xff00a86b).withAlpha(175),
-                      disabledTextColor: Colors.white,
-                      textColor: Colors.white,
-                      color:Color(0xff00a86b).withAlpha(255) ,
-                      splashColor: Color(0xfface2d3),
-                      onPressed: () {
-
-                        Navigator.popUntil(context, ModalRoute.withName('/'));
-
-                      },
-
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  child: FutureBuilder<dynamic>(
+                  future: CreateCSV(), // a previously-obtained Future<String> or null
+                  builder: (context, snapshot) {
+                    List<Widget> children;
+                    if (snapshot.data == "Excel Created") {
+                      //print("Created");
+                      return FutureBuilder<dynamic>(
+                          future: ds.UploadCSV(),
+                          // a previously-obtained Future<String> or null
+                          builder: (context, snapshot) {
+                            List<Widget> children;
+                            if (snapshot.data == "Excel Uploaded") {
+                                //Delete Excel
+                              deleteFile();
+                              return RaisedButton(
+                                child: Text("Continue"),
+                                disabledColor: Color(0xff00a86b).withAlpha(175),
+                                disabledTextColor: Colors.white,
+                                textColor: Colors.white,
+                                color: Color(0xff00a86b).withAlpha(255),
+                                splashColor: Color(0xfface2d3),
+                                onPressed: () {
+                                  Navigator.popUntil(context, ModalRoute.withName('/'));
+                                },
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
+                              );
+                            }
+                            return SizedBox.shrink();
+                          }
+                      );
+                    } else {
+                      return SizedBox.shrink();
+                    }
+                  }
                     ),
                   ),
                 ),
