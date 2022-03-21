@@ -15,9 +15,9 @@ class ExcelServices{
 
     Sheet sheet = excel['TestData'];
 
-    sheet.appendRow(["ID", "ITT1", "ITT2", "ITT3", "Errors"]);
+    sheet.appendRow(["ID", "ITT1", "ITT2", "ITT3", "ITT4", "Errors"]);
 
-    sheet.appendRow(["TEMP_ID", "${userReactArr[0]}", "${userReactArr[1]}", "${userReactArr[2]}", "${errors}"]);
+    sheet.appendRow(["TEMP_ID", "${userReactArr[0]}", "${userReactArr[1]}", "${userReactArr[2]}", "${userReactArr[3]}", "${errors}"]);
 
     // final PermissionHandler _permissionHandler = PermissionHandler();
     // var result = await _permissionHandler.requestPermissions([PermissionGroup.contacts]);
@@ -25,7 +25,7 @@ class ExcelServices{
     print("create sheet: ${sheet.rows}");
 
     await excel.encode().then((onValue) {
-      File(join("/storage/emulated/0/Download/Testing.xlsx"))
+      File(join("/storage/emulated/0/Download/5D_App_Testing.xlsx"))
         ..createSync(recursive: true)
         ..writeAsBytesSync(onValue);
     });
@@ -42,8 +42,9 @@ class ExcelServices{
 //     });
   }
 
-  static void DeleteCSV() async {
-
+  DeleteCSV() async {
+    final file = await File("/storage/emulated/0/Download/5D_App_Testing.xlsx");
+    await file.delete();
 }
 
 }

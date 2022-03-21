@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:myapp_3dapp/services/database_service.dart';
@@ -38,8 +37,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
   }
 
   deleteFile() async {
-    final file = await File("/storage/emulated/0/Download/Testing.xlsx");
-    await file.delete();
+    return await es.DeleteCSV();
   }
 
   @override
@@ -132,7 +130,7 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                           builder: (context, snapshot) {
                             List<Widget> children;
                             if (snapshot.data == "Excel Uploaded") {
-                                //Delete Excel
+                              //print("Uploaded");
                               deleteFile();
                               return RaisedButton(
                                 child: Text("Continue"),

@@ -48,11 +48,11 @@ class DatabaseService{
 
     //print("In Upload");
 
-    File file = File("/storage/emulated/0/Download/Testing.xlsx");
+    File file = File("/storage/emulated/0/Download/5D_App_Testing.xlsx");
 
     try {
       await firebase_storage.FirebaseStorage.instance
-          .ref('uploads/Testing_${DateTime.now()}.xlsx')
+          .ref('testing/Testing_${DateTime.now()}.xlsx')
           .putFile(file);
       return "Excel Uploaded";
     } on FirebaseException catch (e) {

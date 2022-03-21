@@ -12,27 +12,27 @@ import 'package:myapp_3dapp/screens/progress_screen.dart';
 import 'package:myapp_3dapp/services/excel_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-int turns = 4;
+int turns = 5;
 
-List generateIttArray (int len) {
+List generateBsstArray (int len) {
   var rnd = Random();
-  List rndIttArr = [];
+  List rndBsstArr = [];
   for(int i = 0 ; i < len ; i ++ ){
-    rndIttArr.add(rnd.nextInt(2));
+    rndBsstArr.add(rnd.nextInt(2));
   }
-  print(rndIttArr);
-  return rndIttArr;
+  print(rndBsstArr);
+  return rndBsstArr;
 }
 
-class ITTScreen extends StatefulWidget {
+class BsstScreen extends StatefulWidget {
   final int size;
 
-  const ITTScreen({Key key, this.size = 12}) : super(key: key);
+  const BsstScreen({Key key, this.size = 12}) : super(key: key);
   @override
-  _ITTScreenState createState() => _ITTScreenState();
+  _BsstScreenState createState() => _BsstScreenState();
 }
 
-class _ITTScreenState extends State<ITTScreen> {
+class _BsstScreenState extends State<BsstScreen> {
   List<GlobalKey<FlipCardState>> cardStateKeys = [];
   List<bool> cardFlips = [];
   List<String> data = [];
@@ -44,9 +44,9 @@ class _ITTScreenState extends State<ITTScreen> {
   bool startTest = false;
   bool waiting = false;
 
-  final String itt_left = 'assets/itt_left.svg';
-  final String itt_right = 'assets/itt_right.svg';
-  final String itt_mask = 'assets/itt_mask.svg';
+  final String bsst_left = 'assets/bsst_left.svg';
+  final String bsst_right = 'assets/bsst_right.svg';
+  //final String itt_mask = 'assets/itt_mask.svg';
 
   Future<Widget> delayed;
 
@@ -54,8 +54,8 @@ class _ITTScreenState extends State<ITTScreen> {
   Timer timer;
   Stopwatch s = new Stopwatch();
 
-  List rndIttArr = generateIttArray(turns);
-  List userIttArr = [];
+  List rndBsstArr = generateBsstArray(turns);
+  List userBsstArr = [];
   List userReactArr = [];
 
   bool permissionGranted = false;
@@ -94,8 +94,8 @@ class _ITTScreenState extends State<ITTScreen> {
   }
   */
 
-  Widget generatePiFigure (int lf, ittFigMap){
-    return SvgPicture.asset(ittFigMap[lf], height:350, width:350,);
+  Widget generateArrow (int lf, ittFigMap){
+    return SvgPicture.asset(ittFigMap[lf], height:150, width:150,);
   }
 
   startTimer() {
@@ -103,6 +103,12 @@ class _ITTScreenState extends State<ITTScreen> {
     //print("Started");
   }
 
+  stopTimerMiss() {
+    s.stop();
+    time = s.elapsedMilliseconds;
+    userReactArr.add(-1);
+    s.reset();
+  }
 
   stopTimer() {
     s.stop();
@@ -112,29 +118,23 @@ class _ITTScreenState extends State<ITTScreen> {
     //print("Stop & Reset");
   }
 
-  /*
-  startTimer() {
-    Stopwatch s = new Stopwatch();
-    timer = Timer.periodic(Duration(seconds: 1), (t) {
-      if (this.mounted && startTest) {
-        s.start();
-        setState(() {
-          time = s.elapsedMilliseconds;
-          //time = time + 1;
-        });
-      }
+  miss_regulate() {
+    Future.delayed(Duration(milliseconds: 1500), () {
+      setState(() {
+        waiting = true;
+        regulate();
+      });
+
     });
   }
-
-   */
 
   regulate(){
     taskNo ++;
     if(taskNo == turns) {
-      print(userIttArr);
-      print(userReactArr);
-      int errors = calcError(userIttArr, rndIttArr);
-      print(errors);
+      print("userBsstArr: ${userBsstArr}");
+      print("userReactArr: ${userReactArr}");
+      List errorsNmisses = calcError(userBsstArr, rndBsstArr);
+      print("errorsNmisses: ${errorsNmisses}");
 
       Future _getStoragePermission() async {
         if (await Permission.storage.request().isGranted) {
@@ -146,12 +146,12 @@ class _ITTScreenState extends State<ITTScreen> {
 
       _getStoragePermission();
 
-      //ExcelServices.CreateCSV(userReactArr, errors);
+      //TO DO
 
-      Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>
-          new CustomProgressIndicator(itt_arr: userReactArr, itt_err: errors))
-      );
+      // Navigator.push(context, new MaterialPageRoute(
+      //     builder: (context) =>
+      //     new CustomProgressIndicator(itt_arr: userReactArr, itt_err: errors))
+      // );
     }
     else if(startTest && waiting){
         Future.delayed(Duration(milliseconds: 1500), () {
@@ -162,28 +162,36 @@ class _ITTScreenState extends State<ITTScreen> {
     }
   }
 
-  int calcError(List userIttArr, List rndIttArr){
+  List calcError(List userBsstArr, List rndBsstArr){
     int errors = 0;
-    for (int i = 0 ; i < rndIttArr.length ; i++){
-        if(userIttArr[i] != rndIttArr[i]){
+    int misses = 0;
+    for (int i = 0 ; i < rndBsstArr.length ; i++){
+        if(userBsstArr[i] == -1){
+            misses += 1;
+        }
+        else if(userBsstArr[i] != rndBsstArr[i]){
             errors += 1;
         }
     }
-    return errors;
+    return [errors, misses];
   }
 
   @override
   Widget build(BuildContext context) {
 
-    var ittFigMap = {0:itt_left, 1: itt_right};
+    var BsstFigMap = {0:bsst_left, 1: bsst_right};
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
 
     return Scaffold(
       backgroundColor: Color(0xfface2d3),
       body: SafeArea(
         child: Center(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
 
               Theme(
@@ -205,24 +213,11 @@ class _ITTScreenState extends State<ITTScreen> {
                             },
                             child: const Text('Start Test'),
                           ),
-                      ]else if(startTest && waiting)...[
-                          SizedBox.shrink(),
-                      ]else...[
-                          FutureBuilder <Widget> (
-                            future: Future.delayed(Duration(milliseconds: 100), () async => await SvgPicture.asset(itt_mask, height:350, width:350,)),
-                            builder: (context, snapshot){
-                              if(snapshot.hasData){
-                                startTimer();
-                                return snapshot.data;
-                              }
-                              else{
-                                return generatePiFigure(rndIttArr[taskNo], ittFigMap);
-                                //return SvgPicture.asset(itt_right, height:350, width:350,);
-                              }
-                              //SvgPicture.asset(itt_mask, height:350, width:350,);
-                            },
-                          ),
-                          SizedBox(height: 40,),
+                      ]
+                      // else if(startTest && waiting)...[
+                      //     SizedBox.shrink(),
+                      // ]
+                      else...[
                           Row(
                             children: <Widget> [
                               Expanded(child: ElevatedButton(
@@ -230,8 +225,8 @@ class _ITTScreenState extends State<ITTScreen> {
                                 onPressed: () {
                                   //startTest = false;
                                   print("Left");
-                                  if(userIttArr.length == taskNo){
-                                    userIttArr.add(0);
+                                  if(userBsstArr.length == taskNo){
+                                    userBsstArr.add(0);
                                     stopTimer();
                                     setState(() {
                                       waiting = true;
@@ -244,13 +239,67 @@ class _ITTScreenState extends State<ITTScreen> {
 
                               SizedBox(width: 35,),
 
+                              Container(
+                                width: 250,
+                                height: 250,
+                                decoration: BoxDecoration(
+                                  color: Colors.white60,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.red,
+                                    width: 5,
+                                  )
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(25.0),
+                                  child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget> [
+                                        if(startTest && waiting)...[
+                                          SizedBox.shrink(),
+                                        ] else if (startTest && !waiting)...[
+                                          FutureBuilder (
+                                            future: Future.delayed(Duration(milliseconds: 500), () => "Missed" ),
+                                            builder: (context, snapshot){
+                                              if(snapshot.data == "Missed"){
+                                                //startTimer();
+                                                print("Missed");
+                                                userBsstArr.add(-1);
+                                                stopTimerMiss();
+                                                miss_regulate();
+                                                return Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: <Widget> [
+                                                      Text("Missed"),
+                                                    ]
+                                                );
+                                              }
+                                              else{
+                                                print("Not Missed Yet");
+                                                startTimer();
+                                                return generateArrow(rndBsstArr[taskNo], BsstFigMap);
+                                                //return SvgPicture.asset(itt_right, height:350, width:350,);
+                                              }
+                                              //SvgPicture.asset(itt_mask, height:350, width:350,);
+                                            },
+                                          ),
+                                        ]
+                                      ]
+                                  ),
+                                ),
+                              ),
+
+                              SizedBox(width: 35,),
+
                               Expanded(child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(fixedSize: const Size(200 ,80)),
                                 onPressed: () {
                                   //startTest = false;
                                   print("Right");
-                                  if(userIttArr.length == taskNo){
-                                    userIttArr.add(1);
+                                  if(userBsstArr.length == taskNo){
+                                    userBsstArr.add(1);
                                     stopTimer();
                                     setState(() {
                                       waiting = true;

@@ -4,6 +4,8 @@ import 'package:myapp_3dapp/screens/progress_screen.dart';
 import 'package:myapp_3dapp/screens/type_screen.dart';
 import 'package:myapp_3dapp/screens/uber_screen.dart';
 
+import 'bsst_screen.dart';
+
 class RelaxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -93,9 +95,11 @@ class RelaxScreen extends StatelessWidget {
                             color: Colors.grey[600],
                             iconSize: 100,
 
-                            onPressed: () { Navigator.push(context, new MaterialPageRoute(
+                            onPressed: () {
+                              Navigator.push(context, new MaterialPageRoute(
                                 builder: (context) =>
-                                new ITTScreen())
+                                //new ITTScreen()
+                                new BsstScreen())
                                 //new CustomProgressIndicator())
                             ); },
 
