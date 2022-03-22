@@ -146,106 +146,130 @@ class CustomGuitarDrawerState extends State<CustomGuitarDrawer>
 class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var screen_height = MediaQuery.of(context).size.height;
     return SizedBox(
       width: 300,
-      height: double.infinity,
+      height: screen_height,
+      child: Stack(
+        children: [
+        Material(
+              color: Color(0xfface2d3),
+              child: SafeArea(
+                child: Theme(
+                  data: ThemeData(brightness: Brightness.dark),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
 
-      child: Material(
-        color: Color(0xfface2d3),
-        child: SafeArea(
+                      // Image.asset(
+                      //   'assets/flutter_europe_white.png',
+                      //   width: 200,
+                      // ),
+                      ListTile(
+                        onTap: () {
+                          context.read<AuthenticationService>().signOut();
+                        },
+                        leading: Icon(Icons.login_rounded,color:Colors.black54),
+                        title:  Text(
+                          'Logout',
+                          style: TextStyle(color: Colors.black54,
+                            //  fontSize:20 ,
+                            fontWeight:FontWeight.w700,),
+                        ),
 
-          child: Theme(
-            data: ThemeData(brightness: Brightness.dark),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
+                      ),
+                      ListTile(
+
+                        leading: Icon(Icons.contact_support,color:Colors.black54),
+                        title:  Text(
+                          'Contact Support',
+                          style: TextStyle(color: Colors.black54,
+                          //  fontSize:20 ,
+                            fontWeight:FontWeight.w700,),
+                        ),
+                      ),
+                      ListTile(
+                        focusColor:Colors.black,
+                        leading: Icon(Icons.corporate_fare_rounded , color:Colors.black54),
+                        title: Text(
+                          'About Us',
+                          style: TextStyle(color: Colors.black54,
+                            //  fontSize:20 ,
+                            fontWeight:FontWeight.w700,),
+                        ),
+                      ),
+                      // ListTile(
+                      //   focusColor:Colors.black,
+                      //   leading: Icon(Icons.person, color:Colors.black54),
+                      //   title: Text(
+                      //     'Profile',
+                      //     style: TextStyle(color: Colors.black54,
+                      //       //  fontSize:20 ,
+                      //       fontWeight:FontWeight.w700,),
+                      //   ),
+                      // ),
+                      //SizedBox(height: 399.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
               children: [
-
-                // Image.asset(
-                //   'assets/flutter_europe_white.png',
-                //   width: 200,
-                // ),
-                ListTile(
-                  onTap: () {
-                    context.read<AuthenticationService>().signOut();
-                    /*
-                    Navigator.push(context, new MaterialPageRoute(
-                        builder: (context) =>
-                        new SplashScreen ())
-                    );
-
-                     */
-                  },
-                  leading: Icon(Icons.login_rounded,color:Colors.black54),
-                  title:  Text(
-                    'Logout',
-                    style: TextStyle(color: Colors.black54,
-                      //  fontSize:20 ,
-                      fontWeight:FontWeight.w700,),
-                  ),
-
-                ),
-                ListTile(
-
-                  leading: Icon(Icons.contact_support,color:Colors.black54),
-                  title:  Text(
-                    'Contact Support',
-                    style: TextStyle(color: Colors.black54,
-                    //  fontSize:20 ,
-                      fontWeight:FontWeight.w700,),
-                  ),
-                ),
-                ListTile(
-                  focusColor:Colors.black,
-                  leading: Icon(Icons.corporate_fare_rounded , color:Colors.black54),
-                  title: Text(
-                    'About Us',
-                    style: TextStyle(color: Colors.black54,
-                      //  fontSize:20 ,
-                      fontWeight:FontWeight.w700,),
-                  ),
-                ),
-                // ListTile(
-                //   focusColor:Colors.black,
-                //   leading: Icon(Icons.person, color:Colors.black54),
-                //   title: Text(
-                //     'Profile',
-                //     style: TextStyle(color: Colors.black54,
-                //       //  fontSize:20 ,
-                //       fontWeight:FontWeight.w700,),
-                //   ),
-                // ),
-                SizedBox(height: 399.0),
-                Stack(
-                  children: [
-                    Positioned(
-                    child: ClipPath(
-                      clipper: WaveClipper1(),
-                      child: Container(
-                        height: 70,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Color(0xff00a86b).withAlpha(150),
-                              Color(0xff00a86b),
-                            ],
-                          ),
+                Positioned(
+                  child: ClipPath(
+                    clipper: WaveClipper1(),
+                    child: Container(
+                      height: 90,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Color(0xff00a86b).withAlpha(150),
+                            Color(0xff00a86b),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                  ],
                 ),
-
-
               ],
             ),
           ),
-        ),
+        ],
       ),
+
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child: Stack(
+          //     children: [
+          //       Positioned(
+          //         child: ClipPath(
+          //           clipper: WaveClipper1(),
+          //           child: Container(
+          //             height: 70,
+          //             width: MediaQuery.of(context).size.width,
+          //             decoration: BoxDecoration(
+          //               gradient: LinearGradient(
+          //                 begin: Alignment.topCenter,
+          //                 end: Alignment.bottomCenter,
+          //                 colors: [
+          //                   Color(0xff00a86b).withAlpha(150),
+          //                   Color(0xff00a86b),
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
     );
   }
 }

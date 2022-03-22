@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:excel/excel.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -9,25 +8,27 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/screens//type_screen.dart';
 import 'package:myapp_3dapp/screens/progress_screen.dart';
-import 'package:myapp_3dapp/services/excel_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-int turns = 4;
+int itt_levels = 2;
 
-List generateIttArray (int len) {
+List generateIttArray(int len) {
   var rnd = Random();
   List rndIttArr = [];
-  for(int i = 0 ; i < len ; i ++ ){
+  for (int i = 0; i < len; i++) {
     rndIttArr.add(rnd.nextInt(2));
   }
-  print(rndIttArr);
+  print("rndIttArr: ${rndIttArr}");
   return rndIttArr;
 }
 
 class ITTScreen extends StatefulWidget {
-  final int size;
 
-  const ITTScreen({Key key, this.size = 12}) : super(key: key);
+  final Map dsst_results;
+  final Map bsst_results;
+
+  ITTScreen({this.dsst_results, this.bsst_results,});
+
   @override
   _ITTScreenState createState() => _ITTScreenState();
 }
@@ -39,7 +40,7 @@ class _ITTScreenState extends State<ITTScreen> {
   int previousIndex = -1;
   bool flip = false;
 
-  int taskNo= -1;
+  int taskNo = -1;
 
   bool startTest = false;
   bool waiting = false;
@@ -54,48 +55,33 @@ class _ITTScreenState extends State<ITTScreen> {
   Timer timer;
   Stopwatch s = new Stopwatch();
 
-  List rndIttArr = generateIttArray(turns);
+  List rndIttArr = generateIttArray(itt_levels);
   List userIttArr = [];
-  List userReactArr = [];
+  List userIttReactArr = [];
 
   bool permissionGranted = false;
 
   @override
   void initState() {
     super.initState();
-    //initFutures();
-    /*
-    for (var i = 0; i < widget.size; i++) {
-      cardStateKeys.add(GlobalKey<FlipCardState>());
-      cardFlips.add(true);
-    }
-    for (var i = 0; i < widget.size ~/ 2; i++) {
-      data.add(i.toString());
-    }
-    for (var i = 0; i < widget.size ~/ 2; i++) {
-      data.add(i.toString());
-    }
-
-     */
-    //data.shuffle();
-    //startTimer();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
   }
 
-  dispose(){
+  dispose() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
     super.dispose();
   }
 
-  /*
-  void initFutures() {
-    delayed = Future.delayed(Duration(milliseconds: 1850), () async => await SvgPicture.asset(itt_mask, height:350, width:350,) );
-  }
-  */
-
-  Widget generatePiFigure (int lf, ittFigMap){
-    return SvgPicture.asset(ittFigMap[lf], height:350, width:350,);
+  Widget generatePiFigure(int lf, ittFigMap) {
+    return SvgPicture.asset(
+      ittFigMap[lf],
+      height: 350,
+      width: 350,
+    );
   }
 
   startTimer() {
@@ -103,38 +89,24 @@ class _ITTScreenState extends State<ITTScreen> {
     //print("Started");
   }
 
-
   stopTimer() {
     s.stop();
     time = s.elapsedMilliseconds;
-    userReactArr.add(time);
+    userIttReactArr.add(time);
     s.reset();
     //print("Stop & Reset");
   }
 
-  /*
-  startTimer() {
-    Stopwatch s = new Stopwatch();
-    timer = Timer.periodic(Duration(seconds: 1), (t) {
-      if (this.mounted && startTest) {
-        s.start();
-        setState(() {
-          time = s.elapsedMilliseconds;
-          //time = time + 1;
-        });
-      }
-    });
-  }
+  regulate() {
+    taskNo++;
+    if (taskNo == itt_levels) {
 
-   */
+      print("userIttArr: ${userIttArr}");
+      print("userIttReactArr: ${userIttReactArr}");
 
-  regulate(){
-    taskNo ++;
-    if(taskNo == turns) {
-      print(userIttArr);
-      print(userReactArr);
-      int errors = calcError(userIttArr, rndIttArr);
-      print(errors);
+      int IttErrors = calcError(userIttArr, rndIttArr);
+
+      print("IttErrors: ${IttErrors}");
 
       Future _getStoragePermission() async {
         if (await Permission.storage.request().isGranted) {
@@ -146,55 +118,61 @@ class _ITTScreenState extends State<ITTScreen> {
 
       _getStoragePermission();
 
-      //ExcelServices.CreateCSV(userReactArr, errors);
+      var itt_results = {"itt_levels": itt_levels, "itt_arr": userIttReactArr, "itt_err": IttErrors};
 
-      Navigator.push(context, new MaterialPageRoute(
-          builder: (context) =>
-          new CustomProgressIndicator(itt_arr: userReactArr, itt_err: errors))
-      );
-    }
-    else if(startTest && waiting){
-        Future.delayed(Duration(milliseconds: 1500), () {
-          setState(() {
-            waiting= false;
-          });
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => new CustomProgressIndicator(
+                  dsst_results: widget.dsst_results, bsst_results: widget.bsst_results, itt_results: itt_results
+              )
+          ));
+    } else if (startTest && waiting) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        setState(() {
+          waiting = false;
         });
+      });
     }
   }
 
-  int calcError(List userIttArr, List rndIttArr){
+  int calcError(List userIttArr, List rndIttArr) {
     int errors = 0;
-    for (int i = 0 ; i < rndIttArr.length ; i++){
-        if(userIttArr[i] != rndIttArr[i]){
-            errors += 1;
-        }
+    for (int i = 0; i < rndIttArr.length; i++) {
+      if (userIttArr[i] != rndIttArr[i]) {
+        errors += 1;
+      }
     }
     return errors;
   }
 
   @override
   Widget build(BuildContext context) {
+    var ittFigMap = {0: itt_left, 1: itt_right};
 
-    var ittFigMap = {0:itt_left, 1: itt_right};
 
-    return Scaffold(
-      backgroundColor: Color(0xfface2d3),
-      body: SafeArea(
-        child: Center(
-          child: Column(
+
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.popUntil(context, ModalRoute.withName('/'));
+        return Future.value(true);
+      },
+      child: Scaffold(
+        backgroundColor: Color(0xfface2d3),
+        body: SafeArea(
+          child: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-              Theme(
-                data: ThemeData.dark(),
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget> [
-
-                      //SvgPicture.asset(itt_left, height:350, width:350,),
-                      if(!startTest)...[
+              children: <Widget>[
+                Theme(
+                  data: ThemeData.dark(),
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      children: <Widget>[
+                        //SvgPicture.asset(itt_left, height:350, width:350,),
+                        if (!startTest) ...[
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
@@ -205,69 +183,127 @@ class _ITTScreenState extends State<ITTScreen> {
                             },
                             child: const Text('Start Test'),
                           ),
-                      ]else if(startTest && waiting)...[
+                        ] else if (startTest && waiting) ...[
                           SizedBox.shrink(),
-                      ]else...[
-                          FutureBuilder <Widget> (
-                            future: Future.delayed(Duration(milliseconds: 100), () async => await SvgPicture.asset(itt_mask, height:350, width:350,)),
-                            builder: (context, snapshot){
-                              if(snapshot.hasData){
+                        ] else ...[
+                          FutureBuilder<Widget>(
+                            future: Future.delayed(
+                                Duration(milliseconds: 100),
+                                () async => await SvgPicture.asset(
+                                      itt_mask,
+                                      height: 350,
+                                      width: 350,
+                                    )),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
                                 startTimer();
-                                return snapshot.data;
-                              }
-                              else{
-                                return generatePiFigure(rndIttArr[taskNo], ittFigMap);
+                                return Column(
+                                  children: <Widget>[
+                                    snapshot.data,
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              fixedSize: const Size(200, 80)),
+                                          onPressed: () {
+                                            //startTest = false;
+                                            print("Left");
+                                            if (userIttArr.length == taskNo) {
+                                              userIttArr.add(0);
+                                              stopTimer();
+                                              setState(() {
+                                                waiting = true;
+                                                regulate();
+                                              });
+                                            }
+                                            ;
+                                          },
+                                          child: const Text('Left'),
+                                        )),
+                                        SizedBox(
+                                          width: 35,
+                                        ),
+                                        Expanded(
+                                            child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              fixedSize: const Size(200, 80)),
+                                          onPressed: () {
+                                            //startTest = false;
+                                            print("Right");
+                                            if (userIttArr.length == taskNo) {
+                                              userIttArr.add(1);
+                                              stopTimer();
+                                              setState(() {
+                                                waiting = true;
+                                                regulate();
+                                              });
+                                            }
+                                            ;
+                                          },
+                                          child: const Text('Right'),
+                                        )),
+                                      ],
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                return Column(
+                                  children: <Widget>[
+                                    generatePiFigure(
+                                        rndIttArr[taskNo], ittFigMap),
+                                    //Every Widget below is dummy
+                                    SizedBox(
+                                      height: 40,
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: const Size(200, 80),
+                                            primary: Colors.transparent,
+                                            elevation: 0,
+                                          ),
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          child: const Text(''),
+                                        )),
+                                        SizedBox(
+                                          width: 35,
+                                        ),
+                                        Expanded(
+                                            child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: const Size(200, 80),
+                                            primary: Colors.transparent,
+                                            elevation: 0,
+                                          ),
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          child: const Text(''),
+                                        )),
+                                      ],
+                                    ),
+                                  ],
+                                );
                                 //return SvgPicture.asset(itt_right, height:350, width:350,);
                               }
                               //SvgPicture.asset(itt_mask, height:350, width:350,);
                             },
                           ),
-                          SizedBox(height: 40,),
-                          Row(
-                            children: <Widget> [
-                              Expanded(child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(fixedSize: const Size(200 ,80)),
-                                onPressed: () {
-                                  //startTest = false;
-                                  print("Left");
-                                  if(userIttArr.length == taskNo){
-                                    userIttArr.add(0);
-                                    stopTimer();
-                                    setState(() {
-                                      waiting = true;
-                                      regulate();
-                                    });
-                                  };
-                                },
-                                child: const Text('Left'),
-                              )),
-
-                              SizedBox(width: 35,),
-
-                              Expanded(child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(fixedSize: const Size(200 ,80)),
-                                onPressed: () {
-                                  //startTest = false;
-                                  print("Right");
-                                  if(userIttArr.length == taskNo){
-                                    userIttArr.add(1);
-                                    stopTimer();
-                                    setState(() {
-                                      waiting = true;
-                                      regulate();
-                                    });
-                                  };
-                                },
-                                child: const Text('Right'),
-                              )),
-                            ],
-                          ),
-                      ]
-                    ],
+                        ]
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -290,8 +326,8 @@ class _ITTScreenState extends State<ITTScreen> {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => TypeScreen(
-                    // size: level,
-                  ),
+                      // size: level,
+                      ),
                 ),
               );
               // level *= 2;
@@ -302,5 +338,4 @@ class _ITTScreenState extends State<ITTScreen> {
       ),
     );
   }
-
 }
