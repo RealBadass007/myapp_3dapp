@@ -10,7 +10,7 @@ import 'package:myapp_3dapp/screens//type_screen.dart';
 import 'package:myapp_3dapp/screens/progress_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-int itt_levels = 2;
+int itt_levels = 4;
 
 List generateIttArray(int len) {
   var rnd = Random();
