@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp_3dapp/widgets/custom_bottom_navigation_bar.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../focus_screen.dart';
 import '../relax_screen.dart';
@@ -20,6 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  bool permissionGranted = false;
+
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
@@ -30,6 +33,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future _getStoragePermission() async {
+      if (await Permission.storage.request().isGranted) {
+        setState(() {
+          permissionGranted = true;
+        });
+      }
+    }
+
+    _getStoragePermission();
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xfface2d3),
@@ -38,28 +52,12 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         backgroundColor: Color(0xfface2d3),
         elevation: 0.0,
-
-        /*
-        actions: <Widget>[
-
-          // PopupMenuButton<String>(
-          //   onSelected: choiceAction,
-          //   itemBuilder: (BuildContext context){
-          //     return Constants.choices.map((String choice){
-          //       return PopupMenuItem<String>(
-          //         value: choice,
-          //
-          //         child: Text(choice),
-          //       );
-          //     }).toList();
-          //   },
-          // )
-        ],
-
-         */
       ),
       body: Column(
         children: [
+          if(!permissionGranted)...[
+            Text("Storage Permission Denied!", style: TextStyle(color: Colors.red, fontSize: 20)),
+          ],
           Flexible(
             child: PageView(
               physics: NeverScrollableScrollPhysics(),
@@ -67,7 +65,7 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 RelaxScreen(),
                 FocusScreen(),
-                SleepScreen(),
+                //SleepScreen(),
               ],
             ),
           ),

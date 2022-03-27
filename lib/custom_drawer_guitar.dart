@@ -166,29 +166,7 @@ class MyDrawer extends StatelessWidget {
                       //   'assets/flutter_europe_white.png',
                       //   width: 200,
                       // ),
-                      ListTile(
-                        onTap: () {
-                          context.read<AuthenticationService>().signOut();
-                        },
-                        leading: Icon(Icons.login_rounded,color:Colors.black54),
-                        title:  Text(
-                          'Logout',
-                          style: TextStyle(color: Colors.black54,
-                            //  fontSize:20 ,
-                            fontWeight:FontWeight.w700,),
-                        ),
 
-                      ),
-                      ListTile(
-
-                        leading: Icon(Icons.contact_support,color:Colors.black54),
-                        title:  Text(
-                          'Contact Support',
-                          style: TextStyle(color: Colors.black54,
-                          //  fontSize:20 ,
-                            fontWeight:FontWeight.w700,),
-                        ),
-                      ),
                       ListTile(
                         focusColor:Colors.black,
                         leading: Icon(Icons.corporate_fare_rounded , color:Colors.black54),

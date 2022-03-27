@@ -10,15 +10,11 @@ class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final firebaseUser = context.watch<User>();
+    //final firebaseUser = context.watch<User>();
     //print(firebaseUser);
     //print("${firebaseUser.metadata.creationTime}".substring(0,10));
 
-    if (firebaseUser != null) {
-          return ToHomeScreen();
-        }
-    else {
-      return ToSplashScreen();
+    return ToHomeScreen();
+
     }
   }
-}

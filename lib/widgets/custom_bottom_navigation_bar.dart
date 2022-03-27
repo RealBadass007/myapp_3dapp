@@ -46,49 +46,42 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               ),
             ),
             Positioned(
-              bottom: 45,
+              bottom: 20,
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  CustomNavItem(setPage: setPage, icon: Icons.bubble_chart, id: 1),
+                  Column(
+                    children: [
+                      CustomNavItem(
+                          setPage: setPage, icon: Icons.home, id: 0),
+                      SizedBox(height: 10),
+                      Text(
+                        'Main Tests',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                   Container(),
-                  CustomNavItem(setPage: setPage, icon: Icons.home, id: 0),
-                  Container(),
-                  CustomNavItem(
-                      setPage: setPage, icon: Icons.face_rounded, id: 2),
+                  Column(
+                    children: [
+                      CustomNavItem(setPage: setPage, icon: Icons.bubble_chart, id: 1),
+                      SizedBox(height: 10),
+                      Text(
+                        'Practice',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                  //Container(),
+                  //CustomNavItem(setPage: setPage, icon: Icons.face_rounded, id: 2),
                 ],
               ),
             ),
-            Positioned(
-              bottom: 10,
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                    'Aide',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(),
-                  Text(
-                    'Home',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Container(),
-                  Text(
-                    'Profile',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),

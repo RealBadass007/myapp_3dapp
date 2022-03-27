@@ -24,10 +24,11 @@ List generateBsstArray(int len) {
 }
 
 class BsstScreen extends StatefulWidget {
-
+  final String test_type;
   final Map dsst_results;
+  final String user_status;
 
-  const BsstScreen({this.dsst_results});
+  const BsstScreen({this.dsst_results, this.user_status, this.test_type});
   @override
   _BsstScreenState createState() => _BsstScreenState();
 }
@@ -60,8 +61,6 @@ class _BsstScreenState extends State<BsstScreen> {
   List userBsstReactArr = [];
 
   var rnd = Random();
-
-  bool permissionGranted = false;
 
   @override
   void initState() {
@@ -110,17 +109,18 @@ class _BsstScreenState extends State<BsstScreen> {
 
   miss_regulate() {
     Future.delayed(Duration(milliseconds: 1500), () {
-      setState(() {
-        waiting = true;
-        regulate();
-      });
+      if (this.mounted) {
+        setState(() {
+          waiting = true;
+          regulate();
+        });
+      }
     });
   }
 
   regulate() {
     taskNo++;
     if (taskNo == bsst_levels) {
-
       print("userBsstArr: ${userBsstArr}");
       print("userBsstReactArr: ${userBsstReactArr}");
 
@@ -131,37 +131,34 @@ class _BsstScreenState extends State<BsstScreen> {
 
       print("BsstErrors: ${BsstErrors}, BsstMisses: ${BsstMisses}");
 
-      Future _getStoragePermission() async {
-        if (await Permission.storage.request().isGranted) {
-          setState(() {
-            permissionGranted = true;
-          });
-        }
+      var bsst_results = {
+        "bsst_levels": bsst_levels,
+        "bsst_arr": userBsstReactArr,
+        "bsst_err": BsstErrors,
+        "bsst_misses": BsstMisses
+      };
+
+      if (widget.test_type == "Main") {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => new ITTScreen(
+                      dsst_results: widget.dsst_results,
+                      bsst_results: bsst_results,
+                      user_status: widget.user_status,
+                      test_type: widget.test_type,
+                    )));
+      } else {
+        Navigator.popUntil(context, ModalRoute.withName('/'));
       }
-
-      _getStoragePermission();
-
-      var bsst_results = {"bsst_levels": bsst_levels, "bsst_arr": userBsstReactArr, "bsst_err": BsstErrors, "bsst_misses": BsstMisses};
-
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => new ITTScreen(dsst_results: widget.dsst_results, bsst_results: bsst_results)
-          ));
-
-      //TO DO
-
-      // Navigator.push(context, new MaterialPageRoute(
-      //     builder: (context) =>
-      //     new CustomProgressIndicator(itt_arr: userReactArr, itt_err: errors))
-      // );
-
     } else if (startTest && waiting) {
       int random_wait = 650 + rnd.nextInt(2500 - 650);
       Future.delayed(Duration(milliseconds: random_wait), () {
-        setState(() {
-          waiting = false;
-        });
+        if (this.mounted) {
+          setState(() {
+            waiting = false;
+          });
+        }
       });
     }
   }
@@ -201,24 +198,115 @@ class _BsstScreenState extends State<BsstScreen> {
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         //SvgPicture.asset(itt_left, height:350, width:350,),
                         if (!startTest) ...[
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                startTest = true;
-                                waiting = true;
-                                regulate();
-                              });
-                            },
-                            child: const Text('Start Test'),
-                          ),
-                        ]
-                        // else if(startTest && waiting)...[
-                        //     SizedBox.shrink(),
-                        // ]
-                        else ...[
+                          LayoutBuilder(
+                            builder: (context, constraints) => Container(
+                              constraints: new BoxConstraints(
+                                  maxHeight: 300,
+                                  maxWidth: constraints.maxWidth),
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                      children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          startTest = true;
+                                          waiting = true;
+                                          regulate();
+                                        });
+                                      },
+                                      child: const Text('Start Test'),
+                                    ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          color: Colors.white54,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text("Instructions", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text('''
+                                            1. A left arrow or a right arrow will be displayed 
+                                                within the circle.
+                                            2. User has approximately 0.5 seconds to press the
+                                                button at which the arrow points towards.
+                                            3. Failing to do so, will be considered as a 
+                                                "Miss"''', style: TextStyle(color: Colors.black54))),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // Text("2. Map this symbol to its corresponding number pair using the reference list provided."),
+                                        // Text("3. Press the button containing that number"),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          color: Colors.white54,
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                              0.7,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height *
+                                              0.7,
+                                          child: Image.asset(
+                                            'assets/bsst_hit.png',
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                            color: Colors.white54,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                                0.7,
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                                0.90,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text("A Miss", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                                Image(
+                                                  image: AssetImage('assets/bsst_miss.png'),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ],
+                                            )
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                            ),
+                          )
+                        ] else ...[
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -257,14 +345,15 @@ class _BsstScreenState extends State<BsstScreen> {
                                     )),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       if (startTest && waiting) ...[
                                         SizedBox.shrink(),
                                       ] else if (startTest && !waiting) ...[
                                         FutureBuilder(
                                           future: Future.delayed(
-                                              Duration(milliseconds: 500),
+                                              Duration(milliseconds: 560),
                                               () => "Missed"),
                                           builder: (context, snapshot) {
                                             if (snapshot.data == "Missed") {
@@ -285,7 +374,8 @@ class _BsstScreenState extends State<BsstScreen> {
                                               allowButton = true;
                                               startTimer();
                                               return generateArrow(
-                                                  rndBsstArr[taskNo], BsstFigMap);
+                                                  rndBsstArr[taskNo],
+                                                  BsstFigMap);
                                               //return SvgPicture.asset(itt_right, height:350, width:350,);
                                             }
                                             //SvgPicture.asset(itt_mask, height:350, width:350,);

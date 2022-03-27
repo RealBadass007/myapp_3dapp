@@ -55,6 +55,7 @@ class ExcelServices {
     Map dsst_results,
     Map bsst_results,
     Map itt_results,
+    String user_status,
 
   ) async {
     final excel = Excel.createExcel();
@@ -71,7 +72,7 @@ class ExcelServices {
 
     print("After generate Function CSV");
 
-    List final_arr = ["TEMP_ID", ...temp_dsst_arr,...temp_bsst_arr, ...temp_itt_arr];
+    List final_arr = ["TEMP_ID", ...temp_dsst_arr,...temp_bsst_arr, ...temp_itt_arr, user_status];
 
     sheet.appendRow(final_arr);
 
@@ -89,15 +90,6 @@ class ExcelServices {
     });
 
     return "Excel Created";
-
-    // Directory appDocDirectory = await getApplicationDocumentsDirectory();
-
-//     new Directory(appDocDirectory.path).create(recursive: true)
-// // The created directory is returned as a Future.
-//         .then((Directory directory) {
-//       print('Path of New Dir: '+ directory.path);
-//
-//     });
   }
 
   DeleteCSV() async {

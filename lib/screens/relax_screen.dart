@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/dsst.dart';
+import 'package:myapp_3dapp/screens/bsst_screen.dart';
+import 'package:myapp_3dapp/screens/dsst_screen.dart';
 
 import 'package:myapp_3dapp/screens/uber_screen.dart';
 
 class RelaxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -16,6 +16,8 @@ class RelaxScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0),
             child: Center(
               child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                reverse: true,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +39,7 @@ class RelaxScreen extends StatelessWidget {
                             ),
                             child: IconButton(
                               icon: Image.asset(
-                                  'assets/map.png'), //Icon(Icons.directions_car),
+                                  'assets/sober.png'), //Icon(Icons.directions_car),
                               padding: EdgeInsets.all(8.0),
                               constraints: BoxConstraints(),
                               color: Colors.grey[600],
@@ -46,7 +48,7 @@ class RelaxScreen extends StatelessWidget {
                                 Navigator.push(
                                     context,
                                     new MaterialPageRoute(
-                                        builder: (context) => new UberScreen()));
+                                        builder: (context) => new DsstScreen(test_type: "Main", user_status: "Sober",)));
                               },
                             ),
                           ),
@@ -57,7 +59,7 @@ class RelaxScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        'Location Services',
+                        'Sober Test',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
@@ -84,7 +86,7 @@ class RelaxScreen extends StatelessWidget {
                             ),
                             child: IconButton(
                               icon: Image.asset(
-                                  'assets/test.png'), //Icon(Icons.directions_car),
+                                  'assets/drunk.png'), //Icon(Icons.directions_car),
                               padding: EdgeInsets.all(8.0),
                               constraints: BoxConstraints(),
                               color: Colors.grey[600],
@@ -97,7 +99,7 @@ class RelaxScreen extends StatelessWidget {
                                         builder: (context) =>
                                             //new ITTScreen())
                                             //new BsstScreen())
-                                            new DsstScreen())
+                                            new DsstScreen(test_type: "Main", user_status: "Drunk",))
                                             //new InfoScreen())
                                     //new CustomProgressIndicator())
                                     );
@@ -111,7 +113,7 @@ class RelaxScreen extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        'Take The Test',
+                        'Drunk Test',
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
