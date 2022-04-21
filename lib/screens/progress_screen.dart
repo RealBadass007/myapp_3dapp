@@ -102,13 +102,24 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                   // SizedBox(
                   //   height: 40,
                   // ),
-                  Text(
-                    'Successfully completed the test!! \n \t \t your car has been unlocked',
+                  if (widget.bsst_results["bsst_misses"] <= 1)...[
+                    Text(
+                    'Test Passed!! \t Your car has been unlocked',
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.w700,
                         fontSize: 15),
-                  ),
+                    ),
+                  ]
+                  else ...[
+                    Text(
+                      'Test Failed!! \t Your car will remain locked.',
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15),
+                    ),
+                  ],
                   SizedBox(
                     height: 40,
                   ),

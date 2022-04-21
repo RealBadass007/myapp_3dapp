@@ -6,7 +6,7 @@ import 'bsst_screen.dart';
 
 const double icon_size = 50.0;
 
-int dsst_levels = 1;
+int dsst_levels = 5;
 
 Map<int, Widget> icon_map = {
   1: const Icon(Icons.nfc_rounded, size: icon_size),

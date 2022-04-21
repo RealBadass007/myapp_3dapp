@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'itt_screen.dart';
 
-int bsst_levels = 1;
+int bsst_levels = 5;
 
 List generateBsstArray(int len) {
   var rnd = Random();

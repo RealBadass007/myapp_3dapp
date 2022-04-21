@@ -10,7 +10,7 @@ import 'package:myapp_3dapp/screens//type_screen.dart';
 import 'package:myapp_3dapp/screens/progress_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-int itt_levels = 1;
+int itt_levels = 4;
 
 List generateIttArray(int len) {
   var rnd = Random();
@@ -152,8 +152,6 @@ class _ITTScreenState extends State<ITTScreen> {
   Widget build(BuildContext context) {
     var ittFigMap = {0: itt_left, 1: itt_right};
 
-
-
     return WillPopScope(
       onWillPop: () {
         Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -162,250 +160,249 @@ class _ITTScreenState extends State<ITTScreen> {
       child: Scaffold(
         backgroundColor: Color(0xfface2d3),
         body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Theme(
-                  data: ThemeData.dark(),
-                  child: Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      children: <Widget>[if (!startTest) ...[
-                        LayoutBuilder(builder: (context, constraints) => Container(
-                          constraints: new BoxConstraints(
-                              maxHeight: constraints.maxWidth * 1.8,
-                              maxWidth: constraints.maxWidth),
-                          child: Scrollbar(
-                            isAlwaysShown: true,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        startTest = true;
-                                        waiting = true;
-                                        regulate();
-                                      });
-                                    },
-                                    child: const Text('Start Test'),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                    color: Colors.white54,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Text("Instructions", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text('''
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Theme(
+                data: ThemeData.dark(),
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      if (!startTest) ...[
+                      LayoutBuilder(builder: (context, constraints) => Container(
+                        constraints: new BoxConstraints(
+                            maxHeight: constraints.maxWidth * 1.8,
+                            maxWidth: constraints.maxWidth),
+                        child: Scrollbar(
+                          isAlwaysShown: true,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      startTest = true;
+                                      waiting = true;
+                                      regulate();
+                                    });
+                                  },
+                                  child: const Text('Start Test'),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  color: Colors.white54,
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text("Instructions", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('''
        1. A pi-diagram has 2 arms of unequal lengths.
        2. The objective of this test is to determine
            which arm is longer out of the two.
        3. The diagram will only be flashed on the
            screen for 0.1 seconds before it is masked. ''', textAlign: TextAlign.left, style: TextStyle(color: Colors.black54))),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                    color: Colors.white54,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.9,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.95,
+                                    child: Column(
+                                      children: [
                                         SizedBox(
-                                          height: 20,
+                                          height: 10,
                                         ),
-
+                                        Text("Diagram displayed for 0.1 second"),
+                                        Text("before Masking"),
+                                        Image(
+                                          image: AssetImage('assets/itt_eg_1.png'),
+                                          fit: BoxFit.contain,
+                                        ),
                                       ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                      color: Colors.white54,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.9,
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .height *
-                                          0.95,
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text("Diagram displayed for 0.1 second"),
-                                          Text("before Masking"),
-                                          Image(
-                                            image: AssetImage('assets/itt_eg_1.png'),
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ],
-                                      )
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Container(
-                                      color: Colors.white54,
-                                      width: MediaQuery.of(context)
-                                          .size
-                                          .width *
-                                          0.9,
-                                      height: MediaQuery.of(context)
-                                          .size
-                                          .height *
-                                          0.9,
-                                      child: Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Text("After Masking"),
-                                          Image(
-                                            image: AssetImage('assets/itt_eg_2.png'),
-                                            fit: BoxFit.contain,
-                                          ),
-                                        ],
-                                      )
-                                  ),
+                                    )
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                    color: Colors.white54,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.9,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.9,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text("After Masking"),
+                                        Image(
+                                          image: AssetImage('assets/itt_eg_2.png'),
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ],
+                                    )
+                                ),
 
-                                ],
-                              ),
+                              ],
                             ),
                           ),
                         ),
-                        ),
-                      ] else if (startTest && waiting) ...[
-                        SizedBox.shrink(),
-                      ] else ...[
-                        FutureBuilder<Widget>(
-                          future: Future.delayed(
-                              Duration(milliseconds: 100),
-                                  () async => await SvgPicture.asset(
-                                itt_mask,
-                                height: 350,
-                                width: 350,
-                              )),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              startTimer();
-                              return Column(
-                                children: <Widget>[
-                                  snapshot.data,
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                fixedSize: const Size(200, 80)),
-                                            onPressed: () {
-                                              //startTest = false;
-                                              print("Left");
-                                              if (userIttArr.length == taskNo) {
-                                                userIttArr.add(0);
-                                                stopTimer();
-                                                setState(() {
-                                                  waiting = true;
-                                                  regulate();
-                                                });
-                                              }
-                                              ;
-                                            },
-                                            child: const Text('Left'),
-                                          )),
-                                      SizedBox(
-                                        width: 35,
-                                      ),
-                                      Expanded(
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                fixedSize: const Size(200, 80)),
-                                            onPressed: () {
-                                              //startTest = false;
-                                              print("Right");
-                                              if (userIttArr.length == taskNo) {
-                                                userIttArr.add(1);
-                                                stopTimer();
-                                                setState(() {
-                                                  waiting = true;
-                                                  regulate();
-                                                });
-                                              }
-                                              ;
-                                            },
-                                            child: const Text('Right'),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Column(
-                                children: <Widget>[
-                                  generatePiFigure(
-                                      rndIttArr[taskNo], ittFigMap),
-                                  //Every Widget below is dummy
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              fixedSize: const Size(200, 80),
-                                              primary: Colors.transparent,
-                                              elevation: 0,
-                                            ),
-                                            onPressed: () {
-                                              null;
-                                            },
-                                            child: const Text(''),
-                                          )),
-                                      SizedBox(
-                                        width: 35,
-                                      ),
-                                      Expanded(
-                                          child: ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                              fixedSize: const Size(200, 80),
-                                              primary: Colors.transparent,
-                                              elevation: 0,
-                                            ),
-                                            onPressed: () {
-                                              null;
-                                            },
-                                            child: const Text(''),
-                                          )),
-                                    ],
-                                  ),
-                                ],
-                              );
-                              //return SvgPicture.asset(itt_right, height:350, width:350,);
-                            }
-                            //SvgPicture.asset(itt_mask, height:350, width:350,);
-                          },
-                        ),
-                      ]
-                      ],
-                    ),
+                      ),
+                      ),
+                    ] else if (startTest && waiting) ...[
+                      SizedBox.shrink(),
+                    ] else ...[
+                      FutureBuilder<Widget>(
+                        future: Future.delayed(
+                            Duration(milliseconds: 100),
+                                () async => await SvgPicture.asset(
+                              itt_mask,
+                              height: 350,
+                              width: 350,
+                            )),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            startTimer();
+                            return Column(
+                              children: <Widget>[
+                                snapshot.data,
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              fixedSize: const Size(200, 80)),
+                                          onPressed: () {
+                                            //startTest = false;
+                                            print("Left");
+                                            if (userIttArr.length == taskNo) {
+                                              userIttArr.add(0);
+                                              stopTimer();
+                                              setState(() {
+                                                waiting = true;
+                                                regulate();
+                                              });
+                                            }
+                                            ;
+                                          },
+                                          child: const Text('Left'),
+                                        )),
+                                    SizedBox(
+                                      width: 35,
+                                    ),
+                                    Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              fixedSize: const Size(200, 80)),
+                                          onPressed: () {
+                                            //startTest = false;
+                                            print("Right");
+                                            if (userIttArr.length == taskNo) {
+                                              userIttArr.add(1);
+                                              stopTimer();
+                                              setState(() {
+                                                waiting = true;
+                                                regulate();
+                                              });
+                                            }
+                                            ;
+                                          },
+                                          child: const Text('Right'),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Column(
+                              children: <Widget>[
+                                generatePiFigure(
+                                    rndIttArr[taskNo], ittFigMap),
+                                //Every Widget below is dummy
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: const Size(200, 80),
+                                            primary: Colors.transparent,
+                                            elevation: 0,
+                                          ),
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          child: const Text(''),
+                                        )),
+                                    SizedBox(
+                                      width: 35,
+                                    ),
+                                    Expanded(
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            fixedSize: const Size(200, 80),
+                                            primary: Colors.transparent,
+                                            elevation: 0,
+                                          ),
+                                          onPressed: () {
+                                            null;
+                                          },
+                                          child: const Text(''),
+                                        )),
+                                  ],
+                                ),
+                              ],
+                            );
+                            //return SvgPicture.asset(itt_right, height:350, width:350,);
+                          }
+                          //SvgPicture.asset(itt_mask, height:350, width:350,);
+                        },
+                      ),
+                    ]
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
