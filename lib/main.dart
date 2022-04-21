@@ -3,7 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp_3dapp/services/authentication_service.dart';
+import 'package:myapp_3dapp/services/create_model.dart';
 import 'package:myapp_3dapp/services/database_service.dart';
+import 'package:myapp_3dapp/services/predict_user_state.dart';
 import 'package:provider/provider.dart';
 import 'services/authentication_wrapper.dart';
 
@@ -18,6 +20,9 @@ Future <void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    //CreateModel();
+    //PredictState();
 
     return MultiProvider(
       providers: [

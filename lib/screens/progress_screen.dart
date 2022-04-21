@@ -78,30 +78,30 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
             children: [
               Column(
                 children: [
-                  Container(
-                    height: 200,
-                    width: 200,
-                    child: LiquidCircularProgressIndicator(
-                      value: percent / 100,
-                      // Defaults to 0.5.
-                      valueColor: AlwaysStoppedAnimation(Color(0xff00a86b).withAlpha(175)),
-                      backgroundColor: Colors.white,
-                      borderColor: Colors.white,
-                      borderWidth: 4.0,
-                      direction: Axis.vertical,
-                      center: Text(
-                        percent.toString() + "%",
-                        style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black),
-                      ),
-                    ),
-
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  // Container(
+                  //   height: 200,
+                  //   width: 200,
+                  //   child: LiquidCircularProgressIndicator(
+                  //     value: percent / 100,
+                  //     // Defaults to 0.5.
+                  //     valueColor: AlwaysStoppedAnimation(Color(0xff00a86b).withAlpha(175)),
+                  //     backgroundColor: Colors.white,
+                  //     borderColor: Colors.white,
+                  //     borderWidth: 4.0,
+                  //     direction: Axis.vertical,
+                  //     center: Text(
+                  //       percent.toString() + "%",
+                  //       style: TextStyle(
+                  //           fontSize: 12.0,
+                  //           fontWeight: FontWeight.w600,
+                  //           color: Colors.black),
+                  //     ),
+                  //   ),
+                  //
+                  // ),
+                  // SizedBox(
+                  //   height: 40,
+                  // ),
                   Text(
                     'Successfully completed the test!! \n \t \t your car has been unlocked',
                     style: TextStyle(
@@ -148,7 +148,23 @@ class _CustomProgressIndicatorState extends State<CustomProgressIndicator> {
                               return SizedBox.shrink();
                             }
                         );
-                      } else {
+                      } else if (snapshot.data == "Display Logs") {
+                        return RaisedButton(
+                          child: Text("Continue"),
+                          disabledColor: Color(0xff00a86b).withAlpha(175),
+                          disabledTextColor: Colors.white,
+                          textColor: Colors.white,
+                          color: Color(0xff00a86b).withAlpha(255),
+                          splashColor: Color(0xfface2d3),
+                          onPressed: () {
+                            Navigator.popUntil(context, ModalRoute.withName('/'));
+                          },
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                        );
+                      }
+                      else {
                         return SizedBox.shrink();
                       }
                     }

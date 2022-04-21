@@ -11,7 +11,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'itt_screen.dart';
 
-int bsst_levels = 5;
+int bsst_levels = 1;
 
 List generateBsstArray(int len) {
   var rnd = Random();
@@ -78,7 +78,7 @@ class _BsstScreenState extends State<BsstScreen> {
     super.dispose();
   }
 
-  Widget generateArrow(int lf, ittFigMap) {
+  Widget  generateArrow(int lf, ittFigMap) {
     return Padding(
         padding: const EdgeInsets.all(25.0),
         child: SvgPicture.asset(
@@ -110,10 +110,11 @@ class _BsstScreenState extends State<BsstScreen> {
 
   miss_regulate() {
     Future.delayed(Duration(milliseconds: 1500), () {
-      setState(() {
-        waiting = true;
-        regulate();
-      });
+      if (this.mounted) {
+          setState(() {
+          waiting = true;
+          regulate();
+      });}
     });
   }
 
@@ -200,48 +201,138 @@ class _BsstScreenState extends State<BsstScreen> {
                   data: ThemeData.dark(),
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Column(
+                    child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         //SvgPicture.asset(itt_left, height:350, width:350,),
                         if (!startTest) ...[
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                startTest = true;
-                                waiting = true;
-                                regulate();
-                              });
-                            },
-                            child: const Text('Start Test'),
-                          ),
-                        ]
-                        // else if(startTest && waiting)...[
-                        //     SizedBox.shrink(),
-                        // ]
-                        else ...[
+                          LayoutBuilder(
+                            builder: (context, constraints) => Container(
+                              constraints: new BoxConstraints(
+                                  maxHeight: 300,
+                                  maxWidth: constraints.maxWidth),
+                              child: Scrollbar(
+                                isAlwaysShown: true,
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              startTest = true;
+                                              waiting = true;
+                                              regulate();
+                                            });
+                                          },
+                                          child: const Text('Start Test'),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          color: Colors.white54,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Text("Instructions", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.centerLeft,
+                                                  child: Text('''
+                                            1. A left arrow or a right arrow will be displayed 
+                                                within the circle.
+                                            2. User has approximately 0.5 seconds to press the
+                                                button at which the arrow points towards.
+                                            3. Failing to do so, will be considered as a 
+                                                "Miss"''', style: TextStyle(color: Colors.black54))),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        // Text("2. Map this symbol to its corresponding number pair using the reference list provided."),
+                                        // Text("3. Press the button containing that number"),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                          color: Colors.white54,
+                                          width: MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                              0.7,
+                                          height: MediaQuery.of(context)
+                                              .size
+                                              .height *
+                                              0.7,
+                                          child: Image.asset(
+                                            'assets/bsst_hit.png',
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Container(
+                                            color: Colors.white54,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                                0.7,
+                                            height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                                0.90,
+                                            child: Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text("A Miss", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                                Image(
+                                                  image: AssetImage('assets/bsst_miss.png'),
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ],
+                                            )
+                                        ),
+                                      ]),
+                                ),
+                              ),
+                            ),
+                          )
+                        ] else ...[
                           Row(
                             children: <Widget>[
                               Expanded(
                                   child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(200, 80)),
-                                onPressed: () {
-                                  //startTest = false;
-                                  if (userBsstArr.length == taskNo &&
-                                      allowButton) {
-                                    print("Left");
-                                    userBsstArr.add(0);
-                                    stopTimer();
-                                    allowButton = false;
-                                    setState(() {
-                                      waiting = true;
-                                      regulate();
-                                    });
-                                  }
-                                  ;
-                                },
-                                child: const Text('Left'),
-                              )),
+                                    style: ElevatedButton.styleFrom(
+                                        fixedSize: const Size(200, 80)),
+                                    onPressed: () {
+                                      //startTest = false;
+                                      if (userBsstArr.length == taskNo &&
+                                          allowButton) {
+                                        print("Left");
+                                        userBsstArr.add(0);
+                                        stopTimer();
+                                        allowButton = false;
+                                        setState(() {
+                                          waiting = true;
+                                          regulate();
+                                        });
+                                      }
+                                      ;
+                                    },
+                                    child: const Text('Left'),
+                                  )),
                               SizedBox(
                                 width: 35,
                               ),
@@ -257,15 +348,16 @@ class _BsstScreenState extends State<BsstScreen> {
                                     )),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
                                     children: <Widget>[
                                       if (startTest && waiting) ...[
                                         SizedBox.shrink(),
                                       ] else if (startTest && !waiting) ...[
                                         FutureBuilder(
                                           future: Future.delayed(
-                                              Duration(milliseconds: 500),
-                                              () => "Missed"),
+                                              Duration(milliseconds: 560),
+                                                  () => "Missed"),
                                           builder: (context, snapshot) {
                                             if (snapshot.data == "Missed") {
                                               //startTimer();
@@ -285,7 +377,8 @@ class _BsstScreenState extends State<BsstScreen> {
                                               allowButton = true;
                                               startTimer();
                                               return generateArrow(
-                                                  rndBsstArr[taskNo], BsstFigMap);
+                                                  rndBsstArr[taskNo],
+                                                  BsstFigMap);
                                               //return SvgPicture.asset(itt_right, height:350, width:350,);
                                             }
                                             //SvgPicture.asset(itt_mask, height:350, width:350,);
@@ -299,25 +392,25 @@ class _BsstScreenState extends State<BsstScreen> {
                               ),
                               Expanded(
                                   child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    fixedSize: const Size(200, 80)),
-                                onPressed: () {
-                                  //startTest = false;
-                                  if (userBsstArr.length == taskNo &&
-                                      allowButton) {
-                                    print("Right");
-                                    userBsstArr.add(1);
-                                    stopTimer();
-                                    allowButton = false;
-                                    setState(() {
-                                      waiting = true;
-                                      regulate();
-                                    });
-                                  }
-                                  ;
-                                },
-                                child: const Text('Right'),
-                              )),
+                                    style: ElevatedButton.styleFrom(
+                                        fixedSize: const Size(200, 80)),
+                                    onPressed: () {
+                                      //startTest = false;
+                                      if (userBsstArr.length == taskNo &&
+                                          allowButton) {
+                                        print("Right");
+                                        userBsstArr.add(1);
+                                        stopTimer();
+                                        allowButton = false;
+                                        setState(() {
+                                          waiting = true;
+                                          regulate();
+                                        });
+                                      }
+                                      ;
+                                    },
+                                    child: const Text('Right'),
+                                  )),
                             ],
                           ),
                         ]

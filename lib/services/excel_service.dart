@@ -82,13 +82,14 @@ class ExcelServices {
 
     print("create sheet: ${sheet.rows}");
 
-    await excel.encode().then((onValue) {
-      File(join("/storage/emulated/0/Download/5D_App_Testing.xlsx"))
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(onValue);
-    });
+    // await excel.encode().then((onValue) {
+    //   File(join("/storage/emulated/0/Download/5D_App_Testing.xlsx"))
+    //     ..createSync(recursive: true)
+    //     ..writeAsBytesSync(onValue);
+    // });
 
-    return "Excel Created";
+    //return "Excel Created";
+    return "Display Logs";
 
     // Directory appDocDirectory = await getApplicationDocumentsDirectory();
 

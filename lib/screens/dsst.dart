@@ -6,7 +6,7 @@ import 'bsst_screen.dart';
 
 const double icon_size = 50.0;
 
-int dsst_levels = 5;
+int dsst_levels = 1;
 
 Map<int, Widget> icon_map = {
   1: const Icon(Icons.nfc_rounded, size: icon_size),
@@ -98,9 +98,11 @@ class _DsstScreenState extends State<DsstScreen> {
 
     } else if (startTest && waiting) {
       Future.delayed(const Duration(milliseconds: 1500), () {
-        setState(() {
-          waiting = false;
-        });
+        if (this.mounted){
+          setState(() {
+            waiting = false;
+          });
+        }
       });
     }
   }
@@ -124,35 +126,156 @@ class _DsstScreenState extends State<DsstScreen> {
       },
       child: Scaffold(
         backgroundColor: const Color(0xfface2d3),
-        body: Container(
-          height: MediaQuery.of(context).size.height * 0.95,
-          width: MediaQuery.of(context).size.width * 1,
+        body: Container(child: Theme(
+          data: ThemeData.light(),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   if (!startTest) ...[
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          startTest = true;
-                          waiting = true;
-                          print("Started");
-                          regulate();
-                        });
-                      },
-                      child: const Text('Start Test'),
-                    ),
+                    LayoutBuilder(
+                        builder: (context, constraints) => Container(
+                          constraints: new BoxConstraints(
+                              maxHeight: 300,
+                              maxWidth: constraints.maxWidth),
+                          child: Scrollbar(
+                            isAlwaysShown: true,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        startTest = true;
+                                        waiting = true;
+                                        print("Started");
+                                        regulate();
+                                      });
+                                    },
+                                    child: const Text('Start Test'),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    color: Colors.white54,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text("Instructions", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text('''
+                                            1. Each round, a symbol will be displayed within the 
+                                                circular displayer.
+                                            2. Map this symbol to its corresponding number pair 
+                                                using the reference list provided.
+                                            3. Press the button containing that number''', style: TextStyle(color: Colors.black54))),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  // Text("2. Map this symbol to its corresponding number pair using the reference list provided."),
+                                  // Text("3. Press the button containing that number"),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                    color: Colors.white54,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width *
+                                        0.7,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.7,
+                                    child: Image.asset(
+                                      'assets/dsst_info.png',
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                      color: Colors.white54,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.7,
+                                      height: MediaQuery.of(context)
+                                          .size
+                                          .height *
+                                          0.90,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text("Wrong Response", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                          Text("Cloud -> 8"),
+                                          Image(
+                                            image: AssetImage('assets/dsst_eg_1.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  Container(
+                                      color: Colors.white54,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.7,
+                                      height: MediaQuery.of(context)
+                                          .size
+                                          .height *
+                                          0.90,
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text("Correct Response", style: TextStyle(color: Colors.black54, fontSize: 22, fontWeight: FontWeight. bold)),
+                                          Text("Cloud -> 2"),
+                                          Image(
+                                            image: AssetImage('assets/dsst_eg_2.png'),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ],
+                                      )
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ))
                   ] else ...[
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05),
                     Container(
                       width: MediaQuery.of(context).size.width * 0.24,
                       height: MediaQuery.of(context).size.height * 0.24,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                        padding:
+                        const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                         child: Ink(
                           decoration: const ShapeDecoration(
                             color: Colors.white,
@@ -167,15 +290,17 @@ class _DsstScreenState extends State<DsstScreen> {
                               ] else ...[
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.center,
                                   children: [
                                     FutureBuilder<Widget>(
                                       future: displayIcon(taskNo, icon_map),
                                       builder: (context, snapshot) {
                                         if (snapshot.hasData) {
-                                          print("2 FB");
+                                          print("${snapshot.data}");
                                           startTimer();
                                           allowButton = true;
+                                          //return Text("Hey");
                                           return snapshot.data;
                                         } else {
                                           return const SizedBox.shrink();
@@ -190,7 +315,8 @@ class _DsstScreenState extends State<DsstScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.05),
                     //Second Row starts here
                     Container(
                       decoration: BoxDecoration(
@@ -202,13 +328,13 @@ class _DsstScreenState extends State<DsstScreen> {
                           Row(
                             children: <Widget>[
                               SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.06),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.06),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -231,15 +357,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -263,15 +389,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -294,15 +420,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -326,15 +452,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -357,15 +483,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -388,15 +514,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -419,15 +545,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -451,15 +577,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -485,17 +611,18 @@ class _DsstScreenState extends State<DsstScreen> {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                              MediaQuery.of(context).size.height * 0.02),
                           //Third Row starts here
                           Row(
                             children: <Widget>[
                               SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.06),
+                                  width: MediaQuery.of(context).size.width *
+                                      0.06),
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.07,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                width:
+                                MediaQuery.of(context).size.width * 0.07,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -514,15 +641,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -543,15 +670,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -570,15 +697,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -599,15 +726,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -626,15 +753,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -653,15 +780,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -680,15 +807,15 @@ class _DsstScreenState extends State<DsstScreen> {
                                 ),
                               ),
                               SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.05,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.05,
                                   width: MediaQuery.of(context).size.width *
                                       0.025),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -708,15 +835,15 @@ class _DsstScreenState extends State<DsstScreen> {
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.05,
+                                MediaQuery.of(context).size.height * 0.05,
                                 width:
-                                    MediaQuery.of(context).size.width * 0.025,
+                                MediaQuery.of(context).size.width * 0.025,
                               ),
                               Container(
                                 width:
-                                    MediaQuery.of(context).size.width * 0.075,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.1125,
+                                MediaQuery.of(context).size.width * 0.075,
+                                height: MediaQuery.of(context).size.height *
+                                    0.1125,
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       0.0, 0.0, 0.0, 0.0),
@@ -738,10 +865,10 @@ class _DsstScreenState extends State<DsstScreen> {
                           ),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                              MediaQuery.of(context).size.height * 0.02),
                           SizedBox(
                               height:
-                                  MediaQuery.of(context).size.height * 0.02),
+                              MediaQuery.of(context).size.height * 0.02),
                         ],
                       ),
                     ),
@@ -759,7 +886,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -769,7 +896,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("1",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -801,7 +929,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -811,7 +939,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("2",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -843,7 +972,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -853,7 +982,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("3",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -884,7 +1014,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -894,7 +1024,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("4",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -926,7 +1057,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -936,7 +1067,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("5",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -967,7 +1099,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -977,7 +1109,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("6",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -1008,7 +1141,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -1018,7 +1151,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("7",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -1049,7 +1183,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -1059,7 +1193,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("8",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
                                 onPressed: () {
@@ -1090,7 +1225,7 @@ class _DsstScreenState extends State<DsstScreen> {
                           height: MediaQuery.of(context).size.height * 0.135,
                           child: Padding(
                             padding:
-                                const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                             child: Ink(
                               decoration: const ShapeDecoration(
                                 color: Colors.white,
@@ -1100,7 +1235,8 @@ class _DsstScreenState extends State<DsstScreen> {
                                 // icon: Icon(Icons.looks_4_outlined),
                                 child: Text("9",
                                     style: TextStyle(
-                                        fontSize: 22, color: Colors.grey[800])),
+                                        fontSize: 22,
+                                        color: Colors.grey[800])),
                                 // label: Text(""),
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.grey[100]),
@@ -1130,6 +1266,7 @@ class _DsstScreenState extends State<DsstScreen> {
               ),
             ),
           ),
+        ),
         ),
       ),
     );
