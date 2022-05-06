@@ -67,7 +67,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Text(
-                    'Aide',
+                    'Call',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                     ),

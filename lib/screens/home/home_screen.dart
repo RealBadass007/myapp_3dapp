@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myapp_3dapp/widgets/custom_bottom_navigation_bar.dart';
 
+import '../../contacts_screen.dart';
 import '../focus_screen.dart';
 import '../relax_screen.dart';
 import '../sleep_screen.dart';
@@ -39,24 +40,6 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xfface2d3),
         elevation: 0.0,
 
-        /*
-        actions: <Widget>[
-
-          // PopupMenuButton<String>(
-          //   onSelected: choiceAction,
-          //   itemBuilder: (BuildContext context){
-          //     return Constants.choices.map((String choice){
-          //       return PopupMenuItem<String>(
-          //         value: choice,
-          //
-          //         child: Text(choice),
-          //       );
-          //     }).toList();
-          //   },
-          // )
-        ],
-
-         */
       ),
       body: Column(
         children: [
@@ -66,7 +49,7 @@ class _HomePageState extends State<HomePage> {
               controller: pageController,
               children: <Widget>[
                 RelaxScreen(),
-                FocusScreen(),
+                ContactsScreen(),
                 SleepScreen(),
               ],
             ),

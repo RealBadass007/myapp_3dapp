@@ -40,7 +40,7 @@ class CardItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          "Date Of Birth",
+                          "Date Of Birth:",
                           style: TextStyle(
                             fontSize: 18.0,
                           ),
@@ -87,14 +87,14 @@ class CardItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          "Join Date",
+                          "Test Date:",
                           style: TextStyle(
                             fontSize: 18.0,
                           ),
                         ),
                         SizedBox(width: 16.0),
                         Text(
-                          "${snapshot.data['Date Joined']}",
+                          "${snapshot.data['Prev Test Date']}",
                           //"19 July 2020",
                           style: TextStyle(
                             color: Colors.grey[700],
@@ -135,14 +135,15 @@ class CardItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          "Previous Result",
+                          "Test Time:",
                           style: TextStyle(
                             fontSize: 18.0,
                           ),
                         ),
                         SizedBox(width: 16.0),
                         Text(
-                          "Passed",
+                          "${snapshot.data['Prev Test Time']}",
+                          //"19 July 2020",
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 18.0,
@@ -156,53 +157,7 @@ class CardItem extends StatelessWidget {
               ),
             ),
           ),
-          // Container(
-          //   width:310.0,
-          //   height:71 ,
-          //   child: Card(
-          //     child: Padding(
-          //       padding: const EdgeInsets.symmetric(
-          //         horizontal: 16.0,
-          //         vertical: 21.0,
-          //       ),
-          //       child: Column(
-          //         crossAxisAlignment: CrossAxisAlignment.center,
-          //         children: <Widget>[
-          //           // IconButton(
-          //           //   onPressed: () {},
-          //           //   icon: Icon(
-          //           //     Icons.access_time,
-          //           //     size: 40.0,
-          //           //     color: Colors.green,
-          //           //   ),
-          //           // ),
-          //           SizedBox(width: 24.0),
-          //           Row(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             mainAxisSize: MainAxisSize.min,
-          //             children: <Widget>[
-          //               Text(
-          //                 "Previous Result",
-          //                 style: TextStyle(
-          //                   fontSize: 18.0,
-          //                 ),
-          //               ),
-          //               SizedBox(width: 16.0),
-          //               Text(
-          //                 "21 August 2020",
-          //                 style: TextStyle(
-          //                   color: Colors.grey[700],
-          //                   fontSize: 18.0,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+
           Container(
             width:310.0,
             height:71 ,
@@ -215,28 +170,22 @@ class CardItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    // IconButton(
-                    //   onPressed: () {},
-                    //   icon: Icon(
-                    //     Icons.access_time,
-                    //     size: 40.0,
-                    //     color: Colors.green,
-                    //   ),
-                    // ),
+
                     SizedBox(width: 24.0),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Text(
-                          "Previous Result",
+                          "Test Result:",
                           style: TextStyle(
                             fontSize: 18.0,
                           ),
                         ),
                         SizedBox(width: 16.0),
                         Text(
-                          "27 August 2020",
+                          "${snapshot.data['Prev Test Result']}",
+                          //"19 July 2020",
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 18.0,

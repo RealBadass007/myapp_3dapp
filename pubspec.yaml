@@ -45,7 +45,7 @@ dependencies:
   firebase_auth: ^0.20.1
   cloud_firestore: ^0.16.0
 
-  geolocator: 6.1.0
+  geolocator: 6.2.1
   geocoding: 1.0.5
 
   device_apps:
@@ -61,6 +61,11 @@ dependencies:
 
   ml_algo: ^15.6.3
   ml_dataframe: ^0.4.0
+
+  open_location_code:
+    git:
+      url: https://github.com/google/open-location-code.git
+      path: dart
 
 dev_dependencies:
   flutter_test:

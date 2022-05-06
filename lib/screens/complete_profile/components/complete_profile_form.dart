@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 import '../../../constants.dart';
 import '../../../size_config.dart';
 
+import 'package:open_location_code/open_location_code.dart' as olc;
+
 class CompleteProfileForm extends StatefulWidget {
 
   final String temail;
@@ -29,7 +31,8 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
   String firstName;
   String lastName;
   String phoneNumber;
-  String address;
+  String addressPCode;
+  String DOB;
 
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
@@ -99,9 +102,12 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                       'First Name' : firstNameController.text.trim(),
                       'Last Name' : lastNameController.text.trim(),
                       'Date of Birth' : DOBController.text.trim(),
-                      'Address' : address,
+                      'Address Latitude' : olc.decode("7JFJ" + addressPCode.split(' ').first).center.latitude.toString(),
+                      'Address Longitude' : olc.decode("7JFJ" + addressPCode.split(' ').first).center.longitude.toString(),
                       'Phone Number' : phoneNumberController.text.trim(),
-                      'Prev Test' : "NULL"
+                      'Prev Test Date' : 'Unavailable',
+                      'Prev Test Time'  : 'Unavailable',
+                      'Prev Test Result' : 'Unavailable',
                     });
                 }
                 );
@@ -129,7 +135,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildDOBField() {
     return TextFormField(
-      onSaved: (newValue) => address = newValue,
+      onSaved: (newValue) => DOB = newValue,
       controller: DOBController,
       readOnly: true,
       onTap: () async {
@@ -178,7 +184,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
 
   TextFormField buildAddressFormField() {
     return TextFormField(
-      onSaved: (newValue) => address = newValue,
+      onSaved: (newValue) => addressPCode = newValue,
       controller: addressController,
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -194,8 +200,8 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
         return null;
       },
       decoration: InputDecoration(
-        labelText: "Address",
-        hintText: "Enter your phone address",
+        labelText: "Address Plus Code",
+        hintText: "Enter your Home Plus Code",
         // If  you are using latest version of flutter then lable text and hint text shown like this
         // if you r using flutter less then 1.20.* then maybe this is not working properly
         floatingLabelBehavior: FloatingLabelBehavior.always,

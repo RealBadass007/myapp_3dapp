@@ -4,18 +4,6 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       // home: MyHomePage(title: 'Flutter Contacts'),
-//     );
-//   }
-// }
 class ContactsScreen extends StatefulWidget {
   ContactsScreen({Key key, this.title}) : super(key: key);
 
@@ -69,9 +57,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
         colorIndex = 0;
       }
     });
-    setState(() {
-      contacts = _contacts;
-    });
+    if(this.mounted){
+      setState(() {
+        contacts = _contacts;
+      });
+    }
   }
 
   filterContacts() {
@@ -99,9 +89,11 @@ class _ContactsScreenState extends State<ContactsScreen> {
         return phone != null;
       });
     }
-    setState(() {
-      contactsFiltered = _contacts;
-    });
+    if(this.mounted){
+      setState(() {
+        contactsFiltered = _contacts;
+      });
+    }
   }
 
   @override

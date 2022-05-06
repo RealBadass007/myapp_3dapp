@@ -35,7 +35,7 @@ class ToHomeScreen extends StatelessWidget {
     //   }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'D3 App',
+      title: '5D App',
       routes: customRoutes,
       theme: ThemeData(
         primarySwatch: Colors.red,

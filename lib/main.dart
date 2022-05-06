@@ -9,6 +9,8 @@ import 'package:myapp_3dapp/services/predict_user_state.dart';
 import 'package:provider/provider.dart';
 import 'services/authentication_wrapper.dart';
 
+import 'package:open_location_code/open_location_code.dart' as olc;
+
 Future <void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,11 +24,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DatabaseService dbs = new DatabaseService();
     dbs.CheckModel();
-
     //dbs.UploadModel();
 
-    //CreateModel();
-    //PredictState();
+    //Map Co-ordinates
+    //print(olc.decode("7JFJ5RW6+9M Mumbai, Maharashtra".split(' ').first).center.latitude.toString());
 
     return MultiProvider(
       providers: [

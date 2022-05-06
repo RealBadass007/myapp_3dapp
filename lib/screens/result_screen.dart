@@ -44,59 +44,59 @@ class _ResultIndicatorState extends State<ResultIndicator> {
   //   return await es.DeleteCSV();
   // }
 
-  bool AcceptableErrNMissCount() {
-    if (widget.dsst_results['dsst_err'] + widget.bsst_results['bsst_err'] + widget.itt_results['itt_err'] < 3){
-      if (widget.bsst_results['bsst_err'] + widget.bsst_results['bsst_misses'] <= 2) {
-        return true;
-      }
-    }
-    else{
-      return false;
-    }
-  }
+  // bool AcceptableErrNMissCount() {
+  //   if (widget.dsst_results['dsst_err'] + widget.bsst_results['bsst_err'] + widget.itt_results['itt_err'] < 3){
+  //     if (widget.bsst_results['bsst_err'] + widget.bsst_results['bsst_misses'] <= 2) {
+  //       return true;
+  //     }
+  //   }
+  //   else{
+  //     return false;
+  //   }
+  // }
 
-  List<List<Object>> processData() {
-    widget.dsst_results;
-    widget.bsst_results;
-    widget.itt_results;
-    //print(widget.dsst_results);
-    //print(widget.bsst_results);
-    //print(widget.itt_results);
-
-    int sum = 0;
-    widget.dsst_results['dsst_arr'].forEach((e) => sum += e);
-    double dsst_mean = num.parse((sum/widget.dsst_results['dsst_levels']).toStringAsFixed(2));
-
-    sum = 0;
-    for(int i = 0; i < widget.bsst_results['bsst_levels']; i++){
-      if(widget.bsst_results['bsst_arr'][i] != -1)
-      {
-        sum += widget.bsst_results['bsst_arr'][i];
-      }
-    }
-    double bsst_mean = num.parse((sum/(widget.bsst_results['bsst_levels'] - widget.bsst_results['bsst_misses'])).toStringAsFixed(2));
-
-    sum = 0;
-    widget.itt_results['itt_arr'].forEach((e) => sum += e);
-    double itt_mean = num.parse((sum/widget.itt_results['itt_levels']).toStringAsFixed(2));
-
-    List<List<Object>> data = [
-      ['DSST_MEAN', 'DSST_ERRORS',  'BSST_MEAN',    'BSST_ERRORS',  'BSST_MISSES',     'ITT_MEAN',     'ITT_ERRORS'],
-      [   dsst_mean,
-          widget.dsst_results['dsst_err'],
-          bsst_mean,
-          widget.bsst_results['bsst_err'],
-          widget.bsst_results['bsst_misses'],
-          itt_mean,
-          widget.itt_results['itt_err'],
-      ]
-    ];
-
-    //print(data);
-
-    return data;
-
-  }
+  // List<List<Object>> processData() {
+  //   widget.dsst_results;
+  //   widget.bsst_results;
+  //   widget.itt_results;
+  //   //print(widget.dsst_results);
+  //   //print(widget.bsst_results);
+  //   //print(widget.itt_results);
+  //
+  //   int sum = 0;
+  //   widget.dsst_results['dsst_arr'].forEach((e) => sum += e);
+  //   double dsst_mean = num.parse((sum/widget.dsst_results['dsst_levels']).toStringAsFixed(2));
+  //
+  //   sum = 0;
+  //   for(int i = 0; i < widget.bsst_results['bsst_levels']; i++){
+  //     if(widget.bsst_results['bsst_arr'][i] != -1)
+  //     {
+  //       sum += widget.bsst_results['bsst_arr'][i];
+  //     }
+  //   }
+  //   double bsst_mean = num.parse((sum/(widget.bsst_results['bsst_levels'] - widget.bsst_results['bsst_misses'])).toStringAsFixed(2));
+  //
+  //   sum = 0;
+  //   widget.itt_results['itt_arr'].forEach((e) => sum += e);
+  //   double itt_mean = num.parse((sum/widget.itt_results['itt_levels']).toStringAsFixed(2));
+  //
+  //   List<List<Object>> data = [
+  //     ['DSST_MEAN', 'DSST_ERRORS',  'BSST_MEAN',    'BSST_ERRORS',  'BSST_MISSES',     'ITT_MEAN',     'ITT_ERRORS'],
+  //     [   dsst_mean,
+  //         widget.dsst_results['dsst_err'],
+  //         bsst_mean,
+  //         widget.bsst_results['bsst_err'],
+  //         widget.bsst_results['bsst_misses'],
+  //         itt_mean,
+  //         widget.itt_results['itt_err'],
+  //     ]
+  //   ];
+  //
+  //   //print(data);
+  //
+  //   return data;
+  //
+  // }
 
   @override
   void initState() {
@@ -119,8 +119,7 @@ class _ResultIndicatorState extends State<ResultIndicator> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
 
-    processData();
-    DatabaseService dbs = new DatabaseService();
+    //processData();
     final firebaseUser = context.watch<User>();
 
     return WillPopScope(
@@ -138,15 +137,17 @@ class _ResultIndicatorState extends State<ResultIndicator> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               FutureBuilder<int>(
-                future: PredictState(processData()),
+                future: PredictState(firebaseUser,
+                  dsst_results: widget.dsst_results,
+                    bsst_results: widget.bsst_results,
+                    itt_results: widget.itt_results
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                      dbs.updateTestDate(user_uid: firebaseUser.uid);
-
                     return Column(
                       children: [
                         //to do first time always sober
-                        if (snapshot.data == 1 && AcceptableErrNMissCount())...[
+                        if (snapshot.data == 1)...[
                           Text(
                             'Test Passed!! \t Your car has been unlocked',
                             style: TextStyle(

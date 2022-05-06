@@ -35,14 +35,17 @@ class DatabaseService{
         });
   }
 
-  Future updateTestDate ({String user_uid, }) async {
+  Future updateTestDate ({String user_uid, String test_result}) async {
     print("InUpdateTestDate");
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    String formattedTime = DateFormat('h:mm a' ).format(now);
     return await user_data_ref
         .doc(user_uid)
-        .set({
-      'Prev Test' : formattedDate.trim()
+        .update({
+      'Prev Test Date' : formattedDate.trim(),
+      'Prev Test Time'  : formattedTime.trim(),
+      'Prev Test Result' : test_result.trim(),
     });
   }
 
