@@ -7,7 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp_3dapp/screens//type_screen.dart';
-import 'package:myapp_3dapp/screens/progress_screen.dart';
+import 'package:myapp_3dapp/screens/result_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 int itt_levels = 4;
@@ -123,7 +123,7 @@ class _ITTScreenState extends State<ITTScreen> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => new CustomProgressIndicator(
+              builder: (context) => new ResultIndicator(
                   dsst_results: widget.dsst_results, bsst_results: widget.bsst_results, itt_results: itt_results
               )
           ));

@@ -17,18 +17,6 @@ class StackContainer extends StatelessWidget {
         child: Stack(
           children: <Widget>[
             Container(),
-            // ClipPath(
-            //   clipper: MyCustomClipper(),
-            //   child: Container(
-            //     height: 300.0,
-            //     decoration: BoxDecoration(
-            //       image: DecorationImage(
-            //         image: NetworkImage("https://picsum.photos/200"),
-            //         fit: BoxFit.cover,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Align(
               alignment: Alignment(0, 1),
               child: Column(

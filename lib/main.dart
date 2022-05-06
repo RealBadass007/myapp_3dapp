@@ -20,6 +20,10 @@ Future <void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    DatabaseService dbs = new DatabaseService();
+    dbs.CheckModel();
+
+    //dbs.UploadModel();
 
     //CreateModel();
     //PredictState();

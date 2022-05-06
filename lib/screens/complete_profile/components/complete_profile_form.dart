@@ -101,6 +101,7 @@ class _CompleteProfileFormState extends State<CompleteProfileForm> {
                       'Date of Birth' : DOBController.text.trim(),
                       'Address' : address,
                       'Phone Number' : phoneNumberController.text.trim(),
+                      'Prev Test' : "NULL"
                     });
                 }
                 );

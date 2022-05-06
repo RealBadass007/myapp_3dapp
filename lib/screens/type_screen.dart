@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:myapp_3dapp/screens/progress_screen.dart';
+import 'package:myapp_3dapp/screens/result_screen.dart';
 
 
 
@@ -71,7 +71,7 @@ class _TypeScreenState extends State<TypeScreen> {
                   onPressed: () {
                     Navigator.push(context, new MaterialPageRoute(
                         builder: (context) =>
-                        new CustomProgressIndicator())
+                        new ResultIndicator())
                     );
                     // level *= 2;
                   },

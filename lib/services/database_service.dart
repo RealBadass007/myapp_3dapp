@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/foundation.dart';
+
+import 'package:intl/intl.dart';
 
 import 'dart:io';
+
+import 'package:http/http.dart' as http;
 
 import 'package:path_provider/path_provider.dart';
 
@@ -12,6 +17,7 @@ class DatabaseService{
   //static bool exist = false;
   bool newUser = false;
   //DatabaseService({this.uid});
+  static var httpClient = new HttpClient();
 
   CollectionReference user_data_ref = FirebaseFirestore.instance.collection('user_cred');
 
@@ -29,6 +35,17 @@ class DatabaseService{
         });
   }
 
+  Future updateTestDate ({String user_uid, }) async {
+    print("InUpdateTestDate");
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
+    return await user_data_ref
+        .doc(user_uid)
+        .set({
+      'Prev Test' : formattedDate.trim()
+    });
+  }
+
   Future getUsersData({String user_uid}) async {
     Map userData = {};
     try {
@@ -41,6 +58,46 @@ class DatabaseService{
     } catch (e) {
       print(e.toString());
       return null;
+    }
+  }
+
+  Future<bool> CheckModel() async {
+    final fileName = 'intoxication_classifier.json';
+    bool fileExists = await File('/storage/emulated/0/Android/data/com.example.myapp_3dapp/files/' + fileName).exists();
+
+    if (!fileExists){
+      DownloadModel();
+    }
+  }
+
+  Future DownloadModel() async {
+    final String url = 'https://firebasestorage.googleapis.com/v0/b/tcet-a16-5dapp.appspot.com/o/model%2Fintoxication_classifier.json?alt=media&token=6108a7f0-2039-49cb-bde9-19261a3db3fa';
+    final fileName = 'intoxication_classifier.json';
+    var request = await httpClient.getUrl(Uri.parse(url));
+    var response = await request.close();
+    var bytes = await consolidateHttpClientResponseBytes(response);
+
+    File file = File('/storage/emulated/0/Android/data/com.example.myapp_3dapp/files/' + fileName);
+
+    //final body = json.decode(response.body);
+
+    await file.writeAsBytesSync(bytes);
+  }
+
+  Future UploadModel() async {
+
+    //print("In Upload");
+
+    final fileName = 'intoxication_classifier.json';
+    File file = File('/storage/emulated/0/Android/data/com.example.myapp_3dapp/files/' + fileName);
+
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('model/' + fileName)
+          .putFile(file);
+      //return "Model Uploaded";
+    } on FirebaseException catch (e) {
+      // e.g, e.code == 'canceled'
     }
   }
 
@@ -59,21 +116,4 @@ class DatabaseService{
       // e.g, e.code == 'canceled'
     }
   }
-
-  /*
-  /// Check If New Sign In
-  Future<bool> newSignIn(String docID) async {
-    try {
-      await users.doc(docID).get().then((doc) {
-        exist = doc.exists;
-      });
-      return exist;
-    } catch (e) {
-      // If any error
-      exist = false;
-      return exist;
-    }
-  }
-
-   */
 }
